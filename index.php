@@ -50,20 +50,27 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Login | ShopOn-it</title>
+    <title>Login - Rawr Pet Shop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"></head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap');
 
+        body {
+            font-family: 'DM Sans', sans-serif;
+        }
+
+    </style>
 <body>
 <section class="h-100">
     <div class="container h-100">
         <div class="row justify-content-sm-center h-100">
             <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
                 <div class="text-center my-5">
-                    <img src="FessItUp-1.png" alt="logo" width="100">
+                    <img src="logo.png" alt="logo" width="200">
                 </div>
                 <div class="card shadow-lg">
                     <div class="card-body p-5">
-                        <h1 class="fs-4 card-title fw-bold mb-4">Welcome to ShopOn-it</h1>
+                        <h1 class="fs-4 card-title fw-bold mb-4">Rawr Pet Shop</h1>
 
                         <?php
                         if (isset($_GET['error'])){
@@ -111,13 +118,14 @@ if (isset($_POST['submit'])) {
                         </div>
                     </div>
                 </div>
-                <div class="text-center mt-5 text-muted">
-                    Copyright &copy; 2022 &mdash; ShopOn-it
-                </div>
+                <div class="text-center mt-5 mb-1">Copyright &copy; 2023 &mdash; Rawr Pet Shop.</div>
             </div>
         </div>
     </div>
 </section>
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" ></script>
 </body>
 </html>

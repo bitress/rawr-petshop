@@ -53,20 +53,27 @@ include_once 'includes/connection.php';
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Register | ShopOn-it</title>
+    <title>Register - Rawr Pet Shop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"></head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap');
 
+        body {
+            font-family: 'DM Sans', sans-serif;
+        }
+
+    </style>
 <body>
 <section class="h-100">
     <div class="container h-100">
         <div class="row justify-content-sm-center h-100">
-            <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+            <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-7 col-sm-9">
                 <div class="text-center my-5">
-                    <img src="FessItUp-1.png" alt="logo" width="100">
+                    <img src="logo.png" alt="logo" width="150">
                 </div>
                 <div class="card shadow-lg">
                     <div class="card-body p-5">
-                        <h1 class="fs-4 card-title fw-bold mb-4">Welcome to ShopOn-it</h1>
+                        <h1 class="fs-4 card-title fw-bold mb-4">Rawr Pet Shop</h1>
 
                         <?php
 
@@ -86,34 +93,39 @@ include_once 'includes/connection.php';
                         ?>
 
                         <form method="POST" action="register.php">
-                            <div class="mb-3">
-                                <label class="mb-2 text-muted" for="username">Enter your First Name</label>
-                                <input id="username" type="text" class="form-control" name="firstname" value="" required autofocus>
+                            <div class="row">
+
+                                <div class="col-md-4">
+                                    <label class="mb-2 text-muted" for="username">Firstname</label>
+                                    <input id="username" type="text" class="form-control" name="firstname" value="" required autofocus>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="mb-2 text-muted" for="username">Middlename</label>
+                                    <input id="username" type="text" class="form-control" name="middlename" value="" required autofocus>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="mb-2 text-muted" for="username">Lastname</label>
+                                    <input id="username" type="text" class="form-control" name="lastname" value="" required autofocus>
+                                </div>
+
                             </div>
 
-                            <div class="mb-3">
-                                <label class="mb-2 text-muted" for="username">Enter your Middle Name</label>
-                                <input id="username" type="text" class="form-control" name="middlename" value="" required autofocus>
-                            </div>
 
                             <div class="mb-3">
-                                <label class="mb-2 text-muted" for="username">Enter your Last Name</label>
-                                <input id="username" type="text" class="form-control" name="lastname" value="" required autofocus>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="mb-2 text-muted" for="username">Enter your Address</label>
+                                <label class="mb-2 text-muted" for="username">Address</label>
                                 <input id="username" type="text" class="form-control" name="address" value="" required autofocus>
                             </div>
 
                             <div class="mb-3">
-                                <label class="mb-2 text-muted" for="username">Create your username</label>
+                                <label class="mb-2 text-muted" for="username">Username</label>
                                 <input id="username" type="text" class="form-control" name="username" value="" required autofocus>
                             </div>
 
                             <div class="mb-3">
                                 <div class="mb-2 w-100">
-                                    <label class="text-muted" for="password">Create your password</label>
+                                    <label class="text-muted" for="password">Password</label>
                                 </div>
                                 <input id="password" type="password" class="form-control" name="password" required>
                             </div>
@@ -121,7 +133,7 @@ include_once 'includes/connection.php';
 
                             <div class="mb-3">
                                 <div class="mb-2 w-100">
-                                    <label class="text-muted" for="repeat_password">Repeat your password</label>
+                                    <label class="text-muted" for="repeat_password">Confirm Password</label>
                                 </div>
                                 <input id="repeat_password" type="password" class="form-control" name="repeat_password" required>
                             </div>
