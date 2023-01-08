@@ -10,8 +10,6 @@ if (isset($_SESSION['isLoggedIn'])){
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
 
-} else {
-    header("Location: ../index.php");
 }
 
 
@@ -62,7 +60,7 @@ if (isset($_POST['editProfile'])){
     }
 
 }
-
+//echo json_encode($_SESSION);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -140,7 +138,7 @@ if (isset($_POST['editProfile'])){
 <body>
 
 <?php
-    include_once '../includes/navbar.php';
+    include '../includes/navbar.php';
 ?>
 
 <div class="container py-5">
@@ -177,10 +175,10 @@ if (isset($_POST['editProfile'])){
                 <img src="../bannerse/2.png" alt="slide image" class="slide">
                 <img src="../bannerse/3.png" alt="slide image" class="slide">
             </div>
-            <div class="controls">
-                <div class="control prev-slide">&#9668;</div>
-                <div class="control next-slide">&#9658;</div>
-            </div>
+<!--            <div class="controls">-->
+<!--                <div class="control prev-slide">&#9668;</div>-->
+<!--                <div class="control next-slide">&#9658;</div>-->
+<!--            </div>-->
         </div>
     </div>
 </div>
@@ -227,7 +225,19 @@ if (isset($_POST['editProfile'])){
                                 <label>How many?</label>
                                 <input type="number" id="quantity" name="quantity" value="1" title="quantity" class="form-control">
                             </div>
+                                <?php
+                                  if (isset($_SESSION['isLoggedIn'])) {
+                                  ?>
                             <input type="submit" name="addtocart" id="addtocart" class="btn btn-outline-dark btn-sm addtocart" value="Add to Cart">
+                                <?php
+                                } else {
+                                  ?>
+                              <button onclick="window.location='../login.php';" class="btn btn-outline-dark btn-sm" type="button">
+                                  Add to Cart
+                              </button>
+                            <?php
+                                  }
+                              ?>
                         </div>
                         </form>
                     </div>
@@ -251,7 +261,10 @@ if (isset($_POST['editProfile'])){
     </footer>
     <?php
 
+
+    if (isset($_SESSION['isLoggedIn'])) {
         include_once '../includes/modal.php';
+    }
 
     ?>
 

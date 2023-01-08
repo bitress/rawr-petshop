@@ -138,8 +138,8 @@ include_once 'includes/connection.php';
                                 <input id="repeat_password" type="password" class="form-control" name="repeat_password" required>
                             </div>
 
-                            <p class="form-text text-muted mb-3">
-                                By registering you agree with our terms and condition.
+                            <p class="form-text text-muted" style="font-size: 12px">
+                                By creating an account with our store, you will be able to move through the checkout process faster, store shipping addresses, view and track your orders in your account and more.
                             </p>
 
                             <div class="d-flex align-items-center">
