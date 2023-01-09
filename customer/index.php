@@ -88,7 +88,7 @@ if (isset($_POST['editProfile'])){
             }
         }
         .carousel {
-            width: 58vw;
+            width: 50vw;
             height: 400px;
             border-radius: 3px;
             overflow: hidden;
