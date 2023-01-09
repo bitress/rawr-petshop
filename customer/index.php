@@ -140,13 +140,11 @@ if (isset($_POST['editProfile'])){
             height: auto;
         }
 
-
-        .container {
-            margin: auto;
-            width: 80%;
+        #addtocart {
+            width: 250px;
         }
         .badge {
-            background-color: #6394f8;
+            background-color: red;
             border-radius: 10px;
             color: white;
             display: inline-block;
@@ -154,17 +152,23 @@ if (isset($_POST['editProfile'])){
             line-height: 1;
             padding: 3px 7px;
             text-align: center;
-            vertical-align: middle;
+            vertical-align: top;
             white-space: nowrap;
         }
         .shopping-cart {
-            margin: 20px 0;
-            float: right;
-            background: white;
             width: 320px;
-            position: relative;
+            top: 30px;
+            right: -10px;
             border-radius: 3px;
             padding: 20px;
+            overflow: hidden;
+        }
+        .shopping-cart.active {
+            opacity: 1;
+            -webkit-transform-origin: right top 0;
+            -webkit-transform: scale(1);
+            transform-origin: right top 0;
+            transform: scale(1);
         }
         .shopping-cart .shopping-cart-header {
             border-bottom: 1px solid #e8e8e8;
@@ -182,14 +186,22 @@ if (isset($_POST['editProfile'])){
         .shopping-cart .shopping-cart-items img {
             float: left;
             margin-right: 12px;
+            max-width: 70px;
+            max-height: 70px;
         }
         .shopping-cart .shopping-cart-items .item-name {
             display: block;
-            padding-top: 10px;
             font-size: 16px;
         }
+        .shopping-cart .shopping-cart-items .item-detail {
+            display: block;
+            font-size: 12px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
         .shopping-cart .shopping-cart-items .item-price {
-            color: #6394f8;
+            color: #00c0cb;
             margin-right: 8px;
         }
         .shopping-cart .shopping-cart-items .item-quantity {
@@ -198,14 +210,13 @@ if (isset($_POST['editProfile'])){
         .shopping-cart:after {
             bottom: 100%;
             left: 89%;
-            border: solid transparent;
             content: " ";
             height: 0;
             width: 0;
             position: absolute;
             pointer-events: none;
+            border: 8px solid transparent;
             border-bottom-color: white;
-            border-width: 8px;
             margin-left: -8px;
         }
         .cart-icon {
@@ -215,7 +226,7 @@ if (isset($_POST['editProfile'])){
             float: left;
         }
         .button {
-            background: #6394f8;
+            background: #f8770c;
             color: white;
             text-align: center;
             padding: 12px;
@@ -224,15 +235,20 @@ if (isset($_POST['editProfile'])){
             border-radius: 3px;
             font-size: 16px;
             margin: 25px 0 15px 0;
+            text-transform: uppercase;
         }
         .button:hover {
-            background: #729ef9;
+            background: #f87f1b;
+        }
+        .button i {
+            padding-left: 5px;
         }
         .clearfix:after {
             content: "";
             display: table;
             clear: both;
         }
+
 
 
     </style>
@@ -439,7 +455,6 @@ if (isset($_POST['editProfile'])){
         $('#category_select').change(function() {
         window.location = $(this).val();
     });
-
 
 </script>
 </body>

@@ -27,60 +27,77 @@
 
             <ul class="navbar-nav ms-auto mb-lg-0 d-flex">
 
-
                 <li class="nav-item">
 
                     <div class="dropdown dropstart">
                         <button class="btn btn-outline btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" >
                             <i class="bi-cart-fill me-1"></i>
-                            <span class="badge bg-dark text-white ms-1 rounded-pill"><?php echo countCart($con, $row['id'])?></span>
+                            <span class="badge bg-dark text-white ms-1 rounded-pill"><?php echo countCart($con,  $row['id'])?></span>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3>Your Cart</h3>
-                                    <div class="table-responsive">
-                                        <table class="table table-borderless">
-                                            <thead>
-                                                <th>Image</th>
-                                                <th>Name</th>
-                                                <th>Quantity</th>
-                                                <th>Price</th>
-                                                <th>Subtotal</th>
-                                                <th>Actions</th>
-                                            </thead>
-                                            <tbody>
+                            <div class="shopping-cart active">
+                                <div class="shopping-cart-header">
+                                    <i class="bi-cart me-1"></i>
+                                    <span class="badge bg-dark text-white ms-1 rounded-pill"><?php echo countCart($con,  $row['id'])?></span>
 
-                                            <?php
-                                            $id = $row['id'];
-                                            $total_price = 0;
+                                    <div class="shopping-cart-total">
+                                        <span class="lighter-text">Total:</span>
+                                        <span class="main-color-text total">
+                                        </span>
 
-                                            $sql = "SELECT * FROM cart INNER JOIN products ON products.id = cart.product_id INNER JOIN users ON users.id = cart.user_id LEFT JOIN category ON category.category_id = products.category WHERE  users.id = '$id'";
-                                            $result = mysqli_query($con, $sql);
-                                            while ($cart = mysqli_fetch_array($result)){
-                                            $total_price += $cart['product_price'] * $cart['quantity'];
+                                        <?php
 
-                                            ?>
-                                                <tr>
-                                                    <td><img width="50px" src="<?php echo WEBSITE_DOMAIN . $cart['product_image'] ?>"></td>
-                                                    <td><?php echo $cart['product_name'] ?></td>
-                                                    <td><?php echo $cart['quantity'] ?></td>
-                                                    <td><?php echo $cart['product_price'] ?></td>
-                                                    <td>₱<?php echo number_format($cart['product_price'] * $cart['quantity']) ?></td>
-                                                    <td>delete</td>
-                                                </tr>
-                                            <?php
-                                            }
-                                            ?>
-                                            </tbody>
-                                        </table>
+                                        if (isset($_SESSION['total_price'])){
+                                            echo '₱' . number_format( $_SESSION['total_price']);
+                                        }
+
+                                        ?>
+
+
+                                        </span>
                                     </div>
-                                </div>
-                            </div>
+                                </div> <!--end shopping-cart-header -->
+
+                                <ul class="shopping-cart-items text-decoration-none">
+
+                                    <?php
+                                    $id = $row['id'];
+
+                                    $total_price = 0;
+                                    $sql = "SELECT * FROM cart INNER JOIN products ON products.id = cart.product_id INNER JOIN users ON users.id = cart.user_id LEFT JOIN category ON category.category_id = products.category WHERE  users.id = '$id' LIMIT 5";
+                                    $result = mysqli_query($con, $sql);
+                                    while ($cart = mysqli_fetch_array($result)){
+                                    $total_price += $cart['product_price'] * $cart['quantity'];
+
+                                    ?>
+
+                                    <li class="clearfix ">
+                                        <img src="<?php echo WEBSITE_DOMAIN. $cart['product_image'] ?>" alt="item1" />
+                                        <span class="item-name"><?php echo $cart['product_name'] ?></span>
+                                        <span class="item-detail">Price: ₱<?php echo number_format($cart['product_price']) ?></span>
+                                        <span class="item-price">₱<?php echo number_format($cart['product_price'] * $cart['quantity']) ?></span>
+                                        <span class="item-quantity">Quantity: <?php echo $cart['quantity'] ?></span>
+                                    </li>
+                                        <hr>
+
+                                    <?php
+                                    }
+
+                                    $_SESSION['total_price'] = $total_price;
+
+                                    ?>
+
+                                </ul>
+
+                                <a href="#" class="btn btn-outline-dark btn-sm">Checkout <i class="bi bi-cart-check"></i></a>
+                            </div> <!--end shopping-cart -->
                         </div>
                     </div>
 
                 </li>
+
+
+
 
                 <li class="nav-item">
                     <button data-bs-toggle="modal" data-bs-target="#myProfile" href="#" class="btn btn-outline btn-sm" type="button">
