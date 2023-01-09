@@ -269,7 +269,7 @@ if (isset($_POST['editProfile'])){
         <div class="col-md-4 mb-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Categories</h5>
+                    <h5 class="card-title text-center text-uppercase fw-bolder">Categories</h5>
                     <ul class="list-group list-group-flush">
                         <?php
 
@@ -298,10 +298,6 @@ if (isset($_POST['editProfile'])){
                     <img src="../bannerse/2.png" alt="slide image" class="slide">
                     <img src="../bannerse/3.png" alt="slide image" class="slide">
                 </div>
-                <!--            <div class="controls">-->
-                <!--                <div class="control prev-slide">&#9668;</div>-->
-                <!--                <div class="control next-slide">&#9658;</div>-->
-                <!--            </div>-->
             </div>
         </div>
     </div>
@@ -316,9 +312,13 @@ if (isset($_POST['editProfile'])){
 
         <div class="col-lg-12">
 
+            <div class="bg-light lh-1 fs-1 text-center mb-2">
+               <h1>Top Products</h1>
+            </div>
+
             <div class="row">
                 <?php
-                $sql = "SELECT * FROM products LEFT JOIN category ON category.category_id = products.category";
+                $sql = "SELECT * FROM products LEFT JOIN category ON category.category_id = products.category ORDER BY RAND() LIMIT 12";
                 $result = mysqli_query($con, $sql);
                 if (mysqli_num_rows($result) > 0){
                 while($product = mysqli_fetch_assoc($result)){
