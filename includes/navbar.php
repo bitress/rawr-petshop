@@ -29,16 +29,57 @@
 
 
                 <li class="nav-item">
-                    <div class="dropdown">
+
+                    <div class="dropdown dropstart">
                         <button class="btn btn-outline btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" >
                             <i class="bi-cart-fill me-1"></i>
                             <span class="badge bg-dark text-white ms-1 rounded-pill"><?php echo countCart($con, $row['id'])?></span>
                         </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3>Your Cart</h3>
+                                    <div class="table-responsive">
+                                        <table class="table table-borderless">
+                                            <thead>
+                                                <th>Image</th>
+                                                <th>Name</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                                <th>Subtotal</th>
+                                                <th>Actions</th>
+                                            </thead>
+                                            <tbody>
 
-                        </ul>
+                                            <?php
+                                            $id = $row['id'];
+                                            $total_price = 0;
+
+                                            $sql = "SELECT * FROM cart INNER JOIN products ON products.id = cart.product_id INNER JOIN users ON users.id = cart.user_id LEFT JOIN category ON category.category_id = products.category WHERE  users.id = '$id'";
+                                            $result = mysqli_query($con, $sql);
+                                            while ($cart = mysqli_fetch_array($result)){
+                                            $total_price += $cart['product_price'] * $cart['quantity'];
+
+                                            ?>
+                                                <tr>
+                                                    <td><img width="50px" src="<?php echo WEBSITE_DOMAIN . $cart['product_image'] ?>"></td>
+                                                    <td><?php echo $cart['product_name'] ?></td>
+                                                    <td><?php echo $cart['quantity'] ?></td>
+                                                    <td><?php echo $cart['product_price'] ?></td>
+                                                    <td>₱<?php echo number_format($cart['product_price'] * $cart['quantity']) ?></td>
+                                                    <td>delete</td>
+                                                </tr>
+                                            <?php
+                                            }
+                                            ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </li>
 
                 <li class="nav-item">
