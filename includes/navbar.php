@@ -26,23 +26,35 @@
             ?>
 
             <ul class="navbar-nav ms-auto mb-lg-0 d-flex">
+
+
                 <li class="nav-item">
-                    <button data-bs-toggle="modal" data-bs-target="#myCart" href="#" class="btn btn-outline btn-sm" type="button">
-                        <i class="bi-cart-fill me-1"></i>
-                        Cart
-                        <span class="badge bg-dark text-white ms-1 rounded-pill"><?php echo countCart($con, $row['id'])?></span>
-                    </button>
+                    <div class="dropdown">
+                        <button class="btn btn-outline btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" >
+                            <i class="bi-cart-fill me-1"></i>
+                            <span class="badge bg-dark text-white ms-1 rounded-pill"><?php echo countCart($con, $row['id'])?></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+
+                        </ul>
+                    </div>
                 </li>
+
                 <li class="nav-item">
                     <button data-bs-toggle="modal" data-bs-target="#myProfile" href="#" class="btn btn-outline btn-sm" type="button">
                         <i class="bi-person me-1"></i>
                         Profile
                     </button>
                 </li>
-                <button onclick="window.location='../logout.php';" class="btn btn-outline btn-sm" type="button">
-                    <i class="bi bi-box-arrow-left"></i>
-                    Logout
-                </button>
+
+                <li class="nav-item">
+                    <button onclick="window.location='../logout.php';" class="btn btn-outline btn-sm" type="button">
+                        <i class="bi bi-box-arrow-left"></i>
+                        Logout
+                    </button>
+                </li>
+
             </ul>
 
             <?php

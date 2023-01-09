@@ -81,6 +81,12 @@ if (isset($_POST['editProfile'])){
                 display: none;
             }
         }
+
+        @media (min-width: 1025px) {
+            .category {
+                display: none !important;
+            }
+        }
         .carousel {
             width: 58vw;
             height: 400px;
@@ -134,6 +140,101 @@ if (isset($_POST['editProfile'])){
             height: auto;
         }
 
+
+        .container {
+            margin: auto;
+            width: 80%;
+        }
+        .badge {
+            background-color: #6394f8;
+            border-radius: 10px;
+            color: white;
+            display: inline-block;
+            font-size: 12px;
+            line-height: 1;
+            padding: 3px 7px;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        .shopping-cart {
+            margin: 20px 0;
+            float: right;
+            background: white;
+            width: 320px;
+            position: relative;
+            border-radius: 3px;
+            padding: 20px;
+        }
+        .shopping-cart .shopping-cart-header {
+            border-bottom: 1px solid #e8e8e8;
+            padding-bottom: 15px;
+        }
+        .shopping-cart .shopping-cart-header .shopping-cart-total {
+            float: right;
+        }
+        .shopping-cart .shopping-cart-items {
+            padding-top: 20px;
+        }
+        .shopping-cart .shopping-cart-items li {
+            margin-bottom: 18px;
+        }
+        .shopping-cart .shopping-cart-items img {
+            float: left;
+            margin-right: 12px;
+        }
+        .shopping-cart .shopping-cart-items .item-name {
+            display: block;
+            padding-top: 10px;
+            font-size: 16px;
+        }
+        .shopping-cart .shopping-cart-items .item-price {
+            color: #6394f8;
+            margin-right: 8px;
+        }
+        .shopping-cart .shopping-cart-items .item-quantity {
+            color: #abb0be;
+        }
+        .shopping-cart:after {
+            bottom: 100%;
+            left: 89%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+            border-bottom-color: white;
+            border-width: 8px;
+            margin-left: -8px;
+        }
+        .cart-icon {
+            color: #515783;
+            font-size: 24px;
+            margin-right: 7px;
+            float: left;
+        }
+        .button {
+            background: #6394f8;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            display: block;
+            border-radius: 3px;
+            font-size: 16px;
+            margin: 25px 0 15px 0;
+        }
+        .button:hover {
+            background: #729ef9;
+        }
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+
     </style>
 <body>
 
@@ -142,46 +243,71 @@ if (isset($_POST['editProfile'])){
 ?>
 
 <div class="container py-5">
-<div class="row mb-4 header_col">
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Categories</h5>
-                <ul class="list-group list-group-flush">
-                    <?php
+<div class="row mb-4">
 
-                    $sql = "SELECT * FROM category";
-                    $result = mysqli_query($con, $sql);
-                    while ($category = mysqli_fetch_assoc($result)){
+    <div class="col-md-12">
+        <div class="d-flex category">
+            <select id="category_select" class="form-control">
+                <option selected disabled>--- Choose a Category ---</option>
+                <?php
 
-                    ?> <li class="list-group-item ">
-                            <a class="link-dark text-decoration-none" href="category.php?id=<?php echo $category['category_id'] ?>&name=<?php echo $category['category_name'] ?>">
-                   <?php echo $category['category_name'] ?>
-                </a>
-                        </li>
-                        <?php
-                    }
+                $sql = "SELECT * FROM category";
+                $result = mysqli_query($con, $sql);
+                while ($category = mysqli_fetch_assoc($result)){
+
                     ?>
-                </ul>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="col-md-8">
-        <div class="carousel">
-            <div class="slides">
-                <img src="../bannerse/1.png" alt="slide image" class="slide">
-                <img src="../bannerse/2.png" alt="slide image" class="slide">
-                <img src="../bannerse/3.png" alt="slide image" class="slide">
-            </div>
-<!--            <div class="controls">-->
-<!--                <div class="control prev-slide">&#9668;</div>-->
-<!--                <div class="control next-slide">&#9658;</div>-->
-<!--            </div>-->
+                    <option value="category.php?id=<?php echo $category['category_id'] ?>&name=<?php echo $category['category_name'] ?>"><?php echo $category['category_name'] ?></option>
+                    <?php
+                }
+                ?>
+            </select>
         </div>
     </div>
 </div>
+
+    <div class="row header_col">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Categories</h5>
+                    <ul class="list-group list-group-flush">
+                        <?php
+
+                        $sql = "SELECT * FROM category";
+                        $result = mysqli_query($con, $sql);
+                        while ($category = mysqli_fetch_assoc($result)){
+
+                            ?> <li class="list-group-item ">
+                                <a class="link-dark text-decoration-none" href="category.php?id=<?php echo $category['category_id'] ?>&name=<?php echo $category['category_name'] ?>">
+                                    <?php echo $category['category_name'] ?>
+                                </a>
+                            </li>
+                            <?php
+                        }
+                        ?>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-8">
+            <div class="carousel">
+                <div class="slides">
+                    <img src="../bannerse/1.png" alt="slide image" class="slide">
+                    <img src="../bannerse/2.png" alt="slide image" class="slide">
+                    <img src="../bannerse/3.png" alt="slide image" class="slide">
+                </div>
+                <!--            <div class="controls">-->
+                <!--                <div class="control prev-slide">&#9668;</div>-->
+                <!--                <div class="control next-slide">&#9658;</div>-->
+                <!--            </div>-->
+            </div>
+        </div>
+    </div>
+
+
+
 
 
 
@@ -197,7 +323,7 @@ if (isset($_POST['editProfile'])){
                 if (mysqli_num_rows($result) > 0){
                 while($product = mysqli_fetch_assoc($result)){
                 ?>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="card mb-4 product-wap rounded-0">
                         <div class="card rounded-0">
                             <img class="card-img rounded-0 img-fluid" src="<?php echo WEBSITE_DOMAIN . $product['product_image']?>">
@@ -309,6 +435,11 @@ if (isset($_POST['editProfile'])){
         changeSlide(false);
         restart();
     });
+
+        $('#category_select').change(function() {
+        window.location = $(this).val();
+    });
+
 
 </script>
 </body>
