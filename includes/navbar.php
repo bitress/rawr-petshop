@@ -88,8 +88,9 @@
                                     ?>
 
                                 </ul>
-
-                                <a href="#" class="btn btn-outline-dark btn-sm">Checkout <i class="bi bi-cart-check"></i></a>
+                                <div class="text-center">
+                                    <a href="#" class="btn btn-outline-dark btn-sm">Show Cart <i class="bi bi-cart"></i></a>
+                                </div>
                             </div> <!--end shopping-cart -->
                         </div>
                     </div>

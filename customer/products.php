@@ -75,7 +75,7 @@ if (isset($_POST['editProfile'])){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/css/splide.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/css/splide.min.css">
     <style>
         body {
             overflow: scroll;
@@ -156,31 +156,31 @@ if (isset($_POST['editProfile'])){
 <body>
 
 <?php
-    include '../includes/navbar.php';
+include '../includes/navbar.php';
 ?>
 
 <div class="container py-5">
-<div class="row mb-4">
+    <div class="row mb-4">
 
-    <div class="col-md-12">
-        <div class="d-flex category">
-            <select id="category_select" class="form-control">
-                <option selected disabled>--- Choose a Category ---</option>
-                <?php
-
-                $sql = "SELECT * FROM category";
-                $result = mysqli_query($con, $sql);
-                while ($category = mysqli_fetch_assoc($result)){
-
-                    ?>
-                    <option value="category.php?id=<?php echo $category['category_id'] ?>&name=<?php echo $category['category_name'] ?>"><?php echo $category['category_name'] ?></option>
+        <div class="col-md-12">
+            <div class="d-flex category">
+                <select id="category_select" class="form-control">
+                    <option selected disabled>--- Choose a Category ---</option>
                     <?php
-                }
-                ?>
-            </select>
+
+                    $sql = "SELECT * FROM category";
+                    $result = mysqli_query($con, $sql);
+                    while ($category = mysqli_fetch_assoc($result)){
+
+                        ?>
+                        <option value="category.php?id=<?php echo $category['category_id'] ?>&name=<?php echo $category['category_name'] ?>"><?php echo $category['category_name'] ?></option>
+                        <?php
+                    }
+                    ?>
+                </select>
+            </div>
         </div>
     </div>
-</div>
 
     <div class="row">
 
@@ -215,7 +215,7 @@ if (isset($_POST['editProfile'])){
                         <h3 class="text-center">Top Products</h3>
                     </div>
                     <div class="col mx-auto py-1">
-                        <a href="products.php" class="btn btn-outline-dark btn-sm float-end">Show all Products</a>
+                        <a class="btn btn-outline-dark btn-sm float-end">Show all Products</a>
 
                     </div>
                 </div>
@@ -224,58 +224,58 @@ if (isset($_POST['editProfile'])){
 
             <div class="row">
                 <?php
-                $sql = "SELECT * FROM products LEFT JOIN category ON category.category_id = products.category ORDER BY RAND() LIMIT 4";
+                $sql = "SELECT * FROM products LEFT JOIN category ON category.category_id = products.category ";
                 $result = mysqli_query($con, $sql);
                 if (mysqli_num_rows($result) > 0){
-                while($product = mysqli_fetch_assoc($result)){
-                ?>
-                <div class="col-sm-3 col-6">
-                    <div class="card mb-4 product-wap rounded-0">
-                        <div class="card rounded-0">
-                            <img class="card-img rounded-0 img-fluid" src="<?php echo WEBSITE_DOMAIN . $product['product_image']?>">
-                            <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                    while($product = mysqli_fetch_assoc($result)){
+                        ?>
+                        <div class="col-sm-3 col-6">
+                            <div class="card mb-4 product-wap rounded-0">
+                                <div class="card rounded-0">
+                                    <img class="card-img rounded-0 img-fluid" src="<?php echo WEBSITE_DOMAIN . $product['product_image']?>">
+                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
 
+                                    </div>
+                                </div>
+
+                                <form action="index.php" method="post">
+                                    <input type="hidden" name="product_id" value="<?php echo $product['id']?>">
+                                    <div class="card-body">
+                                        <span class="h3 text-decoration-none"><?php echo $product['product_name']?></span>
+                                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                            <li class="fw-light"><a href="category.php?id=<?php echo $product['category']?>&name=<?php echo urlencode($product['category_name'])?>"><?php echo $product['category_name']?></a> </li>
+                                            <li class="pt-2">
+                                                <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                            </li>
+                                        </ul>
+                                        <p class="text-center mb-0">₱<?php echo number_format($product['product_price'])?></p>
+                                        <div class="mb-2">
+                                            <label>How many?</label>
+                                            <input type="number" id="quantity" name="quantity" value="1" title="quantity" class="form-control">
+                                        </div>
+                                        <?php
+                                        if (isset($_SESSION['isLoggedIn'])) {
+                                            ?>
+                                            <input type="submit" name="addtocart" id="addtocart" class="btn btn-outline-dark btn-sm addtocart" value="Add to Cart">
+                                            <?php
+                                        } else {
+                                            ?>
+                                            <button onclick="window.location='../login.php';" class="btn btn-outline-dark btn-sm" type="button">
+                                                Add to Cart
+                                            </button>
+                                            <?php
+                                        }
+                                        ?>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-
-                        <form action="index.php" method="post">
-                            <input type="hidden" name="product_id" value="<?php echo $product['id']?>">
-                        <div class="card-body">
-                            <span class="h3 text-decoration-none"><?php echo $product['product_name']?></span>
-                            <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                <li class="fw-light"><a href="category.php?id=<?php echo $product['category']?>&name=<?php echo urlencode($product['category_name'])?>"><?php echo $product['category_name']?></a> </li>
-                                <li class="pt-2">
-                                    <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
-                                    <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
-                                    <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
-                                    <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
-                                    <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
-                                </li>
-                            </ul>
-                            <p class="text-center mb-0">₱<?php echo number_format($product['product_price'])?></p>
-                            <div class="mb-2">
-                                <label>How many?</label>
-                                <input type="number" id="quantity" name="quantity" value="1" title="quantity" class="form-control">
-                            </div>
-                                <?php
-                                  if (isset($_SESSION['isLoggedIn'])) {
-                                  ?>
-                            <input type="submit" name="addtocart" id="addtocart" class="btn btn-outline-dark btn-sm addtocart" value="Add to Cart">
-                                <?php
-                                } else {
-                                  ?>
-                              <button onclick="window.location='../login.php';" class="btn btn-outline-dark btn-sm" type="button">
-                                  Add to Cart
-                              </button>
-                            <?php
-                                  }
-                              ?>
-                        </div>
-                        </form>
-                    </div>
-                </div>
-                    <?php
-                }
+                        <?php
+                    }
                 } else {
                     echo "No products to show!";
                 }
@@ -284,54 +284,22 @@ if (isset($_POST['editProfile'])){
         </div>
 
 
-        <div class="bg-light lh-1 fs-1 text-center mb-2">
-            <h1>Categories</h1>
-        </div>
 
-        <div class="row">
-            <div class="splide">
-                <div class="splide__track">
-                    <div class="splide__list">
-                        <?php
-
-                        $sql = "SELECT * FROM category";
-                        $result = mysqli_query($con, $sql);
-                        while ($category = mysqli_fetch_assoc($result)){
-
-                        ?>
-                        <div class="col-sm-4 splide__slide m-2">
-                            <div class="card bg-light">
-                                <div class="card-body">
-                                    <img src="../logo.png" width="100px" class="float-end">
-                                    <h5 class="card-title"><?php echo $category['category_name'] ?></h5>
-                                    <a class="btn btn-outline-dark btn-sm" href="category.php?id=<?php echo $category['category_id'] ?>&name=<?php echo $category['category_name'] ?>">Show Products</a>
-
-                                </div>
-                            </div>
-                        </div>
-                    <?php
-                    }
-                    ?>
-                    </div>
-
-                </div>
-            </div>
-        </div>
 
     </div>
 </div>
 
-    <footer class="footer text-center bg-light p-4">
-        Copyright &copy; 2023 - Rawr Pet Shop
-    </footer>
-    <?php
+<footer class="footer text-center bg-light p-4">
+    Copyright &copy; 2023 - Rawr Pet Shop
+</footer>
+<?php
 
 
-    if (isset($_SESSION['isLoggedIn'])) {
-        include_once '../includes/modal.php';
-    }
+if (isset($_SESSION['isLoggedIn'])) {
+    include_once '../includes/modal.php';
+}
 
-    ?>
+?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/js/splide.min.js"></script>
@@ -396,7 +364,7 @@ if (isset($_POST['editProfile'])){
         restart();
     });
 
-        $('#category_select').change(function() {
+    $('#category_select').change(function() {
         window.location = $(this).val();
     });
 
