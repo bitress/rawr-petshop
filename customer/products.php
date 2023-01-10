@@ -212,11 +212,7 @@ include '../includes/navbar.php';
             <div class="bg-light lh-1 fs-1 mb-2">
                 <div class="row">
                     <div class="col">
-                        <h3 class="text-center">Top Products</h3>
-                    </div>
-                    <div class="col mx-auto py-1">
-                        <a class="btn btn-outline-dark btn-sm float-end">Show all Products</a>
-
+                        <h3 class="text-center">Products</h3>
                     </div>
                 </div>
 
