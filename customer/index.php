@@ -73,6 +73,9 @@ if (isset($_POST['editProfile'])){
     <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/css/splide.min.css">
     <style>
+        body {
+            overflow: scroll;
+        }
         @media (max-width: 1025px) {
             .h-custom {
                 height: 100vh !important;
@@ -89,7 +92,7 @@ if (isset($_POST['editProfile'])){
             }
         }
         .carousel {
-            width: 50vw;
+            width: 88vw;
             height: 400px;
             border-radius: 3px;
             overflow: hidden;
@@ -174,34 +177,11 @@ if (isset($_POST['editProfile'])){
     </div>
 </div>
 
-    <div class="row header_col">
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center text-uppercase fw-bolder">Categories</h5>
-                    <ul class="list-group list-group-flush">
-                        <?php
+    <div class="row">
 
-                        $sql = "SELECT * FROM category";
-                        $result = mysqli_query($con, $sql);
-                        while ($category = mysqli_fetch_assoc($result)){
 
-                            ?> <li class="list-group-item ">
-                                <a class="link-dark text-decoration-none" href="category.php?id=<?php echo $category['category_id'] ?>&name=<?php echo $category['category_name'] ?>">
-                                    <?php echo $category['category_name'] ?>
-                                </a>
-                            </li>
-                            <?php
-                        }
-                        ?>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="col-md-8">
-            <div class="carousel">
+        <div class="col-12">
+            <div class="carousel mb-4">
                 <div class="slides">
                     <img src="../bannerse/1.png" alt="slide image" class="slide">
                     <img src="../bannerse/2.png" alt="slide image" class="slide">
@@ -209,18 +189,32 @@ if (isset($_POST['editProfile'])){
                 </div>
             </div>
         </div>
+
+
+        <div class="col-12 header_col">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title text-center text-uppercase fw-bolder">TBA</h5>
+                </div>
+            </div>
+        </div>
     </div>
-
-
-
-
 
 
 
     <div class="row">
         <div class="col-lg-12">
-            <div class="bg-light lh-1 fs-1 text-center mb-2">
-               <h1>Top Products</h1>
+            <div class="bg-light lh-1 fs-1 mb-2">
+                <div class="row">
+                    <div class="col">
+                        <h3 class="text-center">Top Products</h3>
+                    </div>
+                    <div class="col mx-auto py-1">
+                        <a class="btn btn-outline-dark btn-sm float-end">Show all Products</a>
+
+                    </div>
+                </div>
+
             </div>
 
             <div class="row">
@@ -230,7 +224,7 @@ if (isset($_POST['editProfile'])){
                 if (mysqli_num_rows($result) > 0){
                 while($product = mysqli_fetch_assoc($result)){
                 ?>
-                <div class="col-3">
+                <div class="col-sm-3 col-6">
                     <div class="card mb-4 product-wap rounded-0">
                         <div class="card rounded-0">
                             <img class="card-img rounded-0 img-fluid" src="<?php echo WEBSITE_DOMAIN . $product['product_image']?>">
