@@ -71,6 +71,7 @@ if (isset($_POST['editProfile'])){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"></head>
     <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/css/splide.min.css">
     <style>
         @media (max-width: 1025px) {
             .h-custom {
@@ -217,21 +218,19 @@ if (isset($_POST['editProfile'])){
 
 
     <div class="row">
-
         <div class="col-lg-12">
-
             <div class="bg-light lh-1 fs-1 text-center mb-2">
                <h1>Top Products</h1>
             </div>
 
             <div class="row">
                 <?php
-                $sql = "SELECT * FROM products LEFT JOIN category ON category.category_id = products.category ORDER BY RAND() LIMIT 12";
+                $sql = "SELECT * FROM products LEFT JOIN category ON category.category_id = products.category ORDER BY RAND() LIMIT 4";
                 $result = mysqli_query($con, $sql);
                 if (mysqli_num_rows($result) > 0){
                 while($product = mysqli_fetch_assoc($result)){
                 ?>
-                <div class="col-md-3">
+                <div class="col-3">
                     <div class="card mb-4 product-wap rounded-0">
                         <div class="card rounded-0">
                             <img class="card-img rounded-0 img-fluid" src="<?php echo WEBSITE_DOMAIN . $product['product_image']?>">
@@ -286,6 +285,39 @@ if (isset($_POST['editProfile'])){
         </div>
 
 
+        <div class="bg-light lh-1 fs-1 text-center mb-2">
+            <h1>Categories</h1>
+        </div>
+
+        <div class="row">
+            <div class="splide">
+                <div class="splide__track">
+                    <div class="splide__list">
+                        <?php
+
+                        $sql = "SELECT * FROM category";
+                        $result = mysqli_query($con, $sql);
+                        while ($category = mysqli_fetch_assoc($result)){
+
+                        ?>
+                        <div class="col-sm-4 splide__slide m-2">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <img src="../logo.png" width="100px" class="float-end">
+                                    <h5 class="card-title"><?php echo $category['category_name'] ?></h5>
+                                    <a class="btn btn-outline-dark btn-sm" href="category.php?id=<?php echo $category['category_id'] ?>&name=<?php echo $category['category_name'] ?>">Show Products</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                    }
+                    ?>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>
@@ -303,8 +335,29 @@ if (isset($_POST['editProfile'])){
     ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/js/splide.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <script>
+
+    var splide = new Splide('.splide', {
+        type: 'loop',
+        perPage: 3,
+        rewind: true,
+        breakpoints: {
+            640: {
+                perPage: 2,
+                gap: '.7rem',
+                height: '12rem',
+            },
+            480: {
+                perPage: 1,
+                gap: '.7rem',
+                height: '12rem',
+            },
+        },
+    });
+    splide.mount();
+
     $('#category_select').change(function() {
         window.location = $(this).val();
     });
