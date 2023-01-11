@@ -288,8 +288,10 @@ if (isset($_POST['editProfile'])){
                                 <?php
                                   if (isset($_SESSION['isLoggedIn'])) {
                                   ?>
-                            <input type="submit" name="addtocart" id="addtocart" class="btn btn-outline-dark btn-sm addtocart" value="Add to Cart">
-                                <?php
+                                      <button name="addtocart"  class="btn btn-outline-dark btn-sm addtocart" type="submit">
+                                          Add to Cart
+                                      </button>
+                                      <?php
                                 } else {
                                   ?>
                               <button onclick="window.location='../login.php';" class="btn btn-outline-dark btn-sm" type="button">
