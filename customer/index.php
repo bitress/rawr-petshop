@@ -196,12 +196,40 @@ if (isset($_POST['editProfile'])){
         </div>
 
 
-        <div class="col-12 header_col">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title text-center text-uppercase fw-bolder">TBA</h5>
+        <div class="col-12">
+            <div class=" lh-1 fs-1 text-center mb-2 p-2">
+                <h3 class="text-center">Categories</h3>
+            </div>
+
+            <div class="row">
+                <div class="splide">
+                    <div class="splide__track">
+                        <div class="splide__list">
+                            <?php
+                            $sql = "SELECT * FROM category";
+                            $result = mysqli_query($con, $sql);
+                            while ($category = mysqli_fetch_assoc($result)){
+
+                                ?>
+                                <div class="col-sm-2 splide__slide m-2">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <img src="../logo.png" width="100px" class="float-end">
+                                            <h5 class="card-title"><?php echo $category['category_name'] ?></h5>
+                                            <a class="btn btn-outline-dark btn-sm" href="category.php?id=<?php echo $category['category_id'] ?>&name=<?php echo $category['category_name'] ?>">Show Products</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                            ?>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
         </div>
     </div>
 
@@ -209,7 +237,7 @@ if (isset($_POST['editProfile'])){
 
     <div class="row">
         <div class="col-lg-12">
-            <div class="bg-light lh-1 fs-1 mb-2">
+            <div class=" lh-1 fs-1 mb-2">
                 <div class="row">
                     <div class="col">
                         <h3 class="text-center">Top Products</h3>
@@ -284,39 +312,7 @@ if (isset($_POST['editProfile'])){
         </div>
 
 
-        <div class="bg-light lh-1 fs-1 text-center mb-2">
-            <h1>Categories</h1>
-        </div>
 
-        <div class="row">
-            <div class="splide">
-                <div class="splide__track">
-                    <div class="splide__list">
-                        <?php
-
-                        $sql = "SELECT * FROM category";
-                        $result = mysqli_query($con, $sql);
-                        while ($category = mysqli_fetch_assoc($result)){
-
-                        ?>
-                        <div class="col-sm-4 splide__slide m-2">
-                            <div class="card bg-light">
-                                <div class="card-body">
-                                    <img src="../logo.png" width="100px" class="float-end">
-                                    <h5 class="card-title"><?php echo $category['category_name'] ?></h5>
-                                    <a class="btn btn-outline-dark btn-sm" href="category.php?id=<?php echo $category['category_id'] ?>&name=<?php echo $category['category_name'] ?>">Show Products</a>
-
-                                </div>
-                            </div>
-                        </div>
-                    <?php
-                    }
-                    ?>
-                    </div>
-
-                </div>
-            </div>
-        </div>
 
     </div>
 </div>

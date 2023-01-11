@@ -51,6 +51,7 @@ if (isset($_POST['submit'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Login - Rawr Pet Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"></head>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap');
@@ -61,16 +62,55 @@ if (isset($_POST['submit'])) {
 
 </style>
 <body>
-<section class="h-100">
-    <div class="container h-100">
-        <div class="row justify-content-sm-center h-100">
-            <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
-                <div class="text-center my-5">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid px-4 px-lg-5">
+        <a class="navbar-brand" href="#">
+            <img src="logo.png" alt="Logo" width="25" height="25" class="d-inline-block align-text-top">
+            Rawr PetShop
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+                <ul class="navbar-nav ms-auto mb-lg-0 d-flex">
+                    <li class="nav-item">
+                        <button onclick="window.location='login.php';"  href="#" class="btn btn-outline btn-sm" type="button">
+                            <i class="bi bi-person"></i>
+                            Login
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button onclick="window.location='register.php';" class="btn btn-outline btn-sm" type="button">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Register
+                        </button>
+                    </li>
+                </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+
+<div class="container ">
+        <div class="row justify-content-sm-center my-5 py-5">
+            <div class="col-6">
+                <div class="text-center">
                     <img src="logo.png" alt="logo" width="200">
                 </div>
+                <div class="text-center">
+                    <h1>Welcome to Rawr Pet Shop</h1>
+                    <p>Unleash the love with a pet from our shop</p>
+                </div>
+            </div>
+            <div class="col-6">
                 <div class="card shadow-lg">
                     <div class="card-body p-5">
-                        <h1 class="fs-4 card-title fw-bold mb-4">Rawr Pet Shop</h1>
+                        <h1 class="fs-4 card-title fw-bold mb-4">Login</h1>
 
                         <?php
                         if (isset($_GET['error'])){
@@ -118,11 +158,14 @@ if (isset($_POST['submit'])) {
                         </div>
                     </div>
                 </div>
-                <div class="text-center mt-5 mb-1">Copyright &copy; 2023 &mdash; Rawr Pet Shop.</div>
             </div>
         </div>
     </div>
-</section>
+
+<footer>
+    <div class="text-center mt-5 mb-1">Copyright &copy; 2023 &mdash; Rawr Pet Shop.</div>
+
+</footer>
 
 
 
