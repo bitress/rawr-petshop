@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * dajksdjlk
+ */
 include_once '../includes/connection.php';
 
 if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
@@ -56,6 +59,8 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
         $product_id = $_POST['product_id'];
         $product_price = $_POST['product_price'];
         $category = $_POST['category'];
+        $stock = $_POST['stock'];
+        $description = $_POST['description'];
 
         if(isset($_FILES['product_image'])){
             $file_name = $_FILES['product_image']['name'];
@@ -64,13 +69,11 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
             $array = explode('.', $_FILES['product_image']['name']);
             $product_image = "products/" . $file_name;
             move_uploaded_file($file_tmp, "../products/" . $file_name);
-
-
         } else {
             $product_image = $_POST['product_image_orig'];
         }
 
-        $sql = "UPDATE products SET product_name = '$product_name', product_price = '$product_price', category = '$category', product_image = '$product_image' WHERE id = '$product_id'";
+        $sql = "UPDATE products SET product_name = '$product_name', product_description = '$description', product_price = '$product_price', stock = '$stock', category = '$category', product_image = '$product_image' WHERE id = '$product_id'";
         mysqli_query($con, $sql);
         header("Location: index.php");
 
@@ -85,9 +88,8 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Admin | ShopOn-it</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"></head>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
-<body>
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script><body>
 
 <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
@@ -156,10 +158,12 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
             <table class="table" id="myTable">
                 <thead>
                     <th>Product Image</th>
-                    <th>Product ID</th>
-                    <th>Product Name</th>
-                    <th>Product Category</th>
-                    <th>Product Price</th>
+                    <th> ID</th>
+                    <th> Name</th>
+                    <th> Description</th>
+                    <th> In Stock</th>
+                    <th> Category</th>
+                    <th> Price</th>
                     <th>Actions</th>
                 </thead>
                 <tbody>
@@ -174,6 +178,8 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
                         <td><img width="50px" src="<?php echo WEBSITE_DOMAIN. $product['product_image']?>"></td>
                         <td><?php echo $product['id']?></td>
                         <td><?php echo $product['product_name']?></td>
+                        <td><?php echo $product['product_description']?></td>
+                        <td><?php echo $product['stock']?></td>
                         <td><?php echo $product['category_name']?></td>
                         <td><?php echo $product['product_price']?></td>
                         <td><div class="btn-group">
@@ -219,6 +225,21 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
                                 <label>Product Name</label>
                                 <input type="text" name="product_name" class="form-control" value="<?php echo $product['product_name']?>">
                             </div>
+
+                            <div class="mb-3">
+                                <label>Product Category</label>
+
+                                <textarea name="description" rows="3" class="form-control"><?php echo $product['product_description']?></textarea>
+
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label>Product Stock</label>
+                                <input type="number" name="stock" class="form-control" value="<?php echo $product['stock']?>">
+
+                            </div>
+
                             <div class="mb-3">
                                 <label>Product Category</label>
                                 <select name="category" class="form-control">
@@ -297,12 +318,12 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
     </div>
 
 
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" ></script>
     <script>
-    const dataTable = new simpleDatatables.DataTable("#myTable", {
-    })
-    const dt = new simpleDatatables.DataTable("#userTable", {
-    })
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" ></script>
+        const dataTable = new simpleDatatables.DataTable("#myTable")
+
+        const dt = new simpleDatatables.DataTable("#userTable")
+    </script>
 </body>
 </html>

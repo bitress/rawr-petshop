@@ -150,6 +150,25 @@ if (isset($_POST['editProfile'])){
 
 
 
+        .bottom{
+            padding: 10px;
+            padding-top: 30px;
+        }
+        .add{
+
+            height: 38px;
+            border-radius: 4px;
+            margin-left: 40px;
+            padding-right: 22px;
+            padding-left: 20px;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 15vw;
+            object-fit: cover;
+        }
+
 
     </style>
 </head>
@@ -201,7 +220,7 @@ if (isset($_POST['editProfile'])){
                 <h3 class="text-center">Categories</h3>
             </div>
 
-            <div class="row">
+            <div class="row g-0">
                 <div class="splide">
                     <div class="splide__track">
                         <div class="splide__list">
@@ -235,9 +254,9 @@ if (isset($_POST['editProfile'])){
 
 
 
-    <div class="row">
+    <div class="row g-0">
         <div class="col-lg-12">
-            <div class=" lh-1 fs-1 mb-2">
+            <div class="lh-1 fs-1">
                 <div class="row">
                     <div class="col">
                         <h3 class="text-center">Top Products</h3>
@@ -269,37 +288,31 @@ if (isset($_POST['editProfile'])){
                         <form action="index.php" method="post">
                             <input type="hidden" name="product_id" value="<?php echo $product['id']?>">
                         <div class="card-body">
-                            <span class="h3 text-decoration-none"><?php echo $product['product_name']?></span>
+                            <span class="h6"><a href="#" class="text-decoration-none"><?php echo substr($product['product_name'], 0, 50 ) . "...";?></a> </span>
                             <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                                 <li class="fw-light"><a href="category.php?id=<?php echo $product['category']?>&name=<?php echo urlencode($product['category_name'])?>"><?php echo $product['category_name']?></a> </li>
-                                <li class="pt-2">
-                                    <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
-                                    <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
-                                    <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
-                                    <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
-                                    <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
-                                </li>
+
                             </ul>
-                            <p class="text-center mb-0">₱<?php echo number_format($product['product_price'])?></p>
-                            <div class="mb-2">
-                                <label>How many?</label>
-                                <input type="number" id="quantity" name="quantity" value="1" title="quantity" class="form-control">
-                            </div>
+                            <p class="text-center mb-0 h6">₱<?php echo number_format($product['product_price'])?></p>
+                            <div class="bottom d-flex flex-row justify-content-center">
+                                <div class="input-group mb-3">
+                                    <input type="number" id="quantity" name="quantity" value="1" title="quantity" class="form-control">
+                                </div>
                                 <?php
-                                  if (isset($_SESSION['isLoggedIn'])) {
-                                  ?>
-                                      <button name="addtocart"  class="btn btn-outline-dark btn-sm addtocart" type="submit">
-                                          Add to Cart
-                                      </button>
-                                      <?php
+                                if (isset($_SESSION['isLoggedIn'])) {
+                                    ?>
+                                    <button name="addtocart"  class="btn btn-outline-success add btn-sm addtocart" type="submit">
+                                        <i class="bi bi-cart"></i>                                    </button>
+                                    <?php
                                 } else {
-                                  ?>
-                              <button onclick="window.location='../login.php';" class="btn btn-outline-dark btn-sm" type="button">
-                                  Add to Cart
-                              </button>
-                            <?php
-                                  }
-                              ?>
+                                    ?>
+                                    <button onclick="window.location='../login.php';" class="btn btn-outline-success add btn-sm" type="button">
+                                        <i class="bi bi-cart"></i>                                    </button>
+                                    <?php
+                                }
+                                ?>
+                            </div>
+
                         </div>
                         </form>
                     </div>

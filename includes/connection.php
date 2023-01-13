@@ -15,4 +15,4 @@ session_start();
 
 include_once 'functions.php';
 
-const WEBSITE_DOMAIN = 'https://demo.itscyanne.xyz/rawr-petshop/';
+const WEBSITE_DOMAIN = 'http://localhost/rawr-petshop/';
