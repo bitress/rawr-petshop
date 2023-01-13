@@ -75,6 +75,7 @@ if (isset($_POST['editProfile'])){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/css/splide.min.css">
     <style>
         body {
@@ -246,9 +247,7 @@ if (isset($_POST['editProfile'])){
                         </div>
                     </div>
                 </div>
-            </div>
-
-
+            </div
         </div>
     </div>
 
@@ -256,14 +255,14 @@ if (isset($_POST['editProfile'])){
 
     <div class="row g-0">
         <div class="col-lg-12">
-            <div class="lh-1 fs-1">
+            <div class="lh-1 fs-1 bg-light p-4 m-2">
                 <div class="row">
                     <div class="col">
-                        <h3 class="text-center">Top Products</h3>
+                        <h3>Top Products</h3>
+                        <p class="text-muted h6">We've sorted through our feed to put together a collection of our products perfect for your pet.</p>
                     </div>
                     <div class="col mx-auto py-1">
                         <a href="products.php" class="btn btn-outline-dark btn-sm float-end">Show all Products</a>
-
                     </div>
                 </div>
 
@@ -288,7 +287,7 @@ if (isset($_POST['editProfile'])){
                         <form action="index.php" method="post">
                             <input type="hidden" name="product_id" value="<?php echo $product['id']?>">
                         <div class="card-body">
-                            <span class="h6"><a href="#" class="text-decoration-none"><?php echo substr($product['product_name'], 0, 50 ) . "...";?></a> </span>
+                            <span class="h6"><a href="product.php?id=<?php echo $product['id']?>" class="text-decoration-none"><?php echo substr($product['product_name'], 0, 50 ) . "...";?></a> </span>
                             <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                                 <li class="fw-light"><a href="category.php?id=<?php echo $product['category']?>&name=<?php echo urlencode($product['category_name'])?>"><?php echo $product['category_name']?></a> </li>
 

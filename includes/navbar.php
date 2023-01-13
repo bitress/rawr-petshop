@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid px-4 px-lg-5">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="index.php">
             <img src="../logo.png" alt="Logo" width="25" height="25" class="d-inline-block align-text-top">
           Rawr PetShop
         </a>
@@ -89,7 +89,7 @@
 
                                 </ul>
                                 <div class="text-center">
-                                    <a href="#" class="btn btn-outline-dark btn-sm">Show Cart <i class="bi bi-cart"></i></a>
+                                    <a href="cart.php" class="btn btn-outline-dark btn-sm">Show Cart <i class="bi bi-cart"></i></a>
                                 </div>
                             </div> <!--end shopping-cart -->
                         </div>

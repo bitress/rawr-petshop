@@ -16,8 +16,6 @@ if (isset($_SESSION['isLoggedIn'])){
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
 
-} else {
-    header("Location: ../index.php");
 }
 
 
@@ -89,6 +87,32 @@ if (isset($_POST['editProfile'])){
             height: 100vh !important;
         }
     }
+
+
+    .bottom{
+        padding: 10px;
+        padding-top: 30px;
+    }
+    .add{
+
+        height: 38px;
+        border-radius: 4px;
+        margin-left: 40px;
+        padding-right: 22px;
+        padding-left: 20px;
+    }
+
+    .card-img {
+        width: 100%;
+        height: 15vw;
+        object-fit: cover;
+    }
+
+    .card-img-top {
+        width: 100%;
+        height: 30vw;
+    }
+
 </style>
 <body>
 
@@ -96,15 +120,6 @@ if (isset($_POST['editProfile'])){
 <?php
 include_once '../includes/navbar.php';
 ?>
-
-<header class="bg-dark py-5">
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Welcome <?php echo $row['firstname'] .' ' . $row['middlename'] . ' '. $row['lastname'] ?></h1>
-            <p class="lead fw-normal text-white-50 mb-0">Have fun shopping!</p>
-        </div>
-    </div>
-</header>
 
 
 
@@ -119,7 +134,8 @@ include_once '../includes/navbar.php';
             <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="<?php echo WEBSITE_DOMAIN . $res['product_image']?>" alt="..." /></div>
             <div class="col-md-6">
                 <div class="small mb-1"><?php echo $res['category_name']; ?></div>
-                <h1 class="display-5 fw-bolder"><?php echo $res['product_name']; ?></h1>
+                <h1 class="h5 fw-bolder"><?php echo $res['product_name']; ?></h1>
+                <p><?php echo $res['product_description'] ?></p>
                 <div class="fs-5 mb-5">
                     <span>₱<?php echo number_format($res['product_price'])?></span>
                 </div>
@@ -136,7 +152,7 @@ include_once '../includes/navbar.php';
 <!-- Related items section-->
 <section class="py-5 bg-light">
     <div class="container px-4 px-lg-5 mt-5">
-        <h2 class="fw-bolder mb-4">Related products</h2>
+        <h2 class="fw-bolder mb-4">You may also like</h2>
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
             <?php
@@ -147,43 +163,47 @@ include_once '../includes/navbar.php';
             if (mysqli_num_rows($result) > 0){
             while($product = mysqli_fetch_assoc($result)){
             ?>
-            <div class="col mb-5">
-                <div class="card h-100" >
-                    <form action="product.php" method="post">
-                        <input type="hidden" name="product_id" value="<?php echo $product['id']?>">
-                        <!-- Product image-->
-                        <div class="img-wrap">
-                            <img  width="450px" height="300px" class="card-img-top" src="<?php echo WEBSITE_DOMAIN . $product['product_image']?>" alt="..." />
-                        </div>
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder"><?php echo $product['product_name']?></h5>
-                                <p class="text-muted"><?php echo $product['category_name']?></p>
-                                <!-- Product price-->
-                                ₱<?php echo number_format($product['product_price'])?>
+                <div class="col-sm-3 col-6">
+                    <div class="card mb-4 product-wap rounded-0">
+                        <div class="card rounded-0">
+                            <img class="card-img rounded-0 img-fluid" src="<?php echo WEBSITE_DOMAIN . $product['product_image']?>">
+                            <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
 
                             </div>
-                            <label>How many?</label>
-                            <input type="number" id="quantity" name="quantity" value="1" title="quantity" class="form-control">
-
                         </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
 
-                            <div class="btn-group btn-group-sm">
-                                <input type="submit"  name="addtocart" id="addtocart" class="btn btn-outline-dark btn-sm addtocart" value="Add to Cart">
-                                <a class="btn btn-outline-dark btn-sm" href="product.php?id=<?php echo $product['id']?>">View options</a>
+                        <form action="index.php" method="post">
+                            <input type="hidden" name="product_id" value="<?php echo $product['id']?>">
+                            <div class="card-body">
+                                <span class="h6 text-dark"><a href="product.php?id=<?php echo $product['id']?>" class="text-decoration-none"><?php echo substr($product['product_name'], 0, 50 ) . "...";?></a> </span>
+                                <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                    <li class="fw-light"><a href="category.php?id=<?php echo $product['category']?>&name=<?php echo urlencode($product['category_name'])?>"><?php echo $product['category_name']?></a> </li>
+
+                                </ul>
+                                <p class="text-center mb-0 h6">₱<?php echo number_format($product['product_price'])?></p>
+                                <div class="bottom d-flex flex-row justify-content-center">
+                                    <div class="input-group mb-3">
+                                        <input type="number" id="quantity" name="quantity" value="1" title="quantity" class="form-control">
+                                    </div>
+                                    <?php
+                                    if (isset($_SESSION['isLoggedIn'])) {
+                                        ?>
+                                        <button name="addtocart"  class="btn btn-outline-success add btn-sm addtocart" type="submit">
+                                            <i class="bi bi-cart"></i>                                    </button>
+                                        <?php
+                                    } else {
+                                        ?>
+                                        <button onclick="window.location='../login.php';" class="btn btn-outline-success add btn-sm" type="button">
+                                            <i class="bi bi-cart"></i>                                    </button>
+                                        <?php
+                                    }
+                                    ?>
+                                </div>
+
                             </div>
-
-                    </form>
-
-
+                        </form>
+                    </div>
                 </div>
-            </div>
-        </div>
-
         <?php
         }
         } else {
@@ -196,6 +216,9 @@ include_once '../includes/navbar.php';
     </div>
 </section>
 
+<footer class="footer text-center bg-light p-4">
+    Copyright &copy; 2023 - Rawr Pet Shop
+</footer>
 
 
 
