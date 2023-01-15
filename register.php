@@ -2,51 +2,48 @@
 
 include_once 'includes/connection.php';
 
-    if (isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
 
+    $username = mysqli_real_escape_string($con, $_POST['username']);
+    $firstname = mysqli_real_escape_string($con, $_POST['firstname']);
+    $middlename = mysqli_real_escape_string($con, $_POST['middlename']);
+    $lastname = mysqli_real_escape_string($con, $_POST['lastname']);
+    $address = mysqli_real_escape_string($con, $_POST['address']);
+    $password = mysqli_real_escape_string($con, $_POST['password']);
+    $confirm_password = mysqli_real_escape_string($con, $_POST['repeat_password']);
+    $profile_picture = $_FILES['profile_picture']['name'];
 
-        $firstname = $_POST['firstname'];
-        $middlename = $_POST['middlename'];
-        $lastname = $_POST['lastname'];
-        $address = $_POST['address'];
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $repeat_password = $_POST['repeat_password'];
-        $pass = md5($repeat_password);
+    if (empty($username) ||  empty($firstname) || empty($lastname) || empty($password) || empty($confirm_password) || empty($profile_picture) || empty($address)) {
+        header("Location: register.php?error=All fields are required!");
 
-        if (empty($firstname)){
-            header("Location: register.php?error=Please enter your firstname!");
-        }
-        if (empty($middlename)){
-            header("Location: register.php?error=Please enter your middlename!");
-        }
-        if (empty($lastname)){
-            header("Location: register.php?error=Please enter your lastname!");
-        }
-        if (empty($address)){
-            header("Location: register.php?error=Please enter your address!");
-        }
+    } elseif ($password != $confirm_password) {
+        header("Location: register.php?error=Password do not match!");
+    } else {
 
-        if (empty($username)){
-            header("Location: register.php?error=Please enter your username!");
-        }
-
-        if (empty($password)){
-            header("Location: register.php?error=Please enter your password!");
-        }
-        if (empty($repeat_password)){
-            header("Location: register.php?error=Please repeat your password!");
-        }
-
-    $sql = "INSERT INTO `users` (`username`, `password`, `firstname`, `middlename`, `lastname`, `address`) VALUES ('$username', '$pass', '$firstname', '$middlename', '$lastname', '$address')";
-        $stmt = mysqli_query($con, $sql);
-        if ($stmt === true){
-                header("Location: index.php?success=You may now login");
+            // Check if the username is already in use
+            $username_check = mysqli_query($con, "SELECT `username` FROM `users` WHERE username = '$username'");
+            $username_count = mysqli_num_rows($username_check);
+            if ($username_count > 0) {
+                header("Location: register.php?error=That username is already in use.");
             } else {
-                echo mysqli_error($con);
-            }
-    }
 
+                $pass = md5($password);
+
+                $sql = "INSERT INTO `users` (`username`, `password`, `firstname`, `middlename`, `lastname`, `address`, `profile_picture`) VALUES ('$username', '$pass', '$firstname', '$middlename', '$lastname', '$address', '$profile_picture')";
+                $stmt = mysqli_query($con, $sql);
+                if ($stmt === true) {
+
+                    $target = "../images/pfp/" . basename($profile_picture);
+                    move_uploaded_file($_FILES['profile_picture']['tmpname'], $target);
+
+                    header("Location: login.php?success=You may now login");
+                } else {
+                    echo "Error: " . $stmt . "<br>" . mysqli_error($con);
+                }
+            }
+        }
+    
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -131,8 +128,13 @@ include_once 'includes/connection.php';
                         }
                         ?>
 
-                        <form method="POST" action="register.php">
+                        <form method="POST" action="register.php" enctype="multipart/form-data">
                             <div class="row">
+
+                                <div class="col-md-12">
+                                    <label class="mb-2 text-muted">Profile Picture</label>
+                                    <input type="file" id="profile_picture" class="form-control" name="profile_picture" required><br>
+                                </div>
 
                                 <div class="col-md-4">
                                     <label class="mb-2 text-muted" for="username">Firstname</label>

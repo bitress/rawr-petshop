@@ -77,7 +77,7 @@ if (isset($_POST['editProfile'])){
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Home | ShopOn-it</title>
+    <title>All Products | Rawr PetShop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"></head>
 <link rel="stylesheet" href="css/style.css">
@@ -113,6 +113,63 @@ if (isset($_POST['editProfile'])){
         height: 30vw;
     }
 
+
+    .quantity {
+        display: inline-block; }
+
+    .quantity .input-text.qty {
+        width: 35px;
+        height: 39px;
+        padding: 0 5px;
+        text-align: center;
+        background-color: transparent;
+        border: 1px solid #efefef;
+    }
+
+    .quantity.buttons_added {
+        text-align: left;
+        position: relative;
+        white-space: nowrap;
+        vertical-align: top; }
+
+    .quantity.buttons_added input {
+        display: inline-block;
+        margin: 0;
+        vertical-align: top;
+        box-shadow: none;
+    }
+
+    .quantity.buttons_added .minus,
+    .quantity.buttons_added .plus {
+        padding: 7px 10px 8px;
+        height: 41px;
+        background-color: #ffffff;
+        border: 1px solid #efefef;
+        cursor:pointer;}
+
+    .quantity.buttons_added .minus {
+        border-right: 0; }
+
+    .quantity.buttons_added .plus {
+        border-left: 0; }
+
+    .quantity.buttons_added .minus:hover,
+    .quantity.buttons_added .plus:hover {
+        background: #eeeeee; }
+
+    .quantity input::-webkit-outer-spin-button,
+    .quantity input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        margin: 0; }
+
+    .quantity.buttons_added .minus:focus,
+    .quantity.buttons_added .plus:focus {
+        outline: none; }
+
+
+
+
 </style>
 <body>
 
@@ -139,9 +196,16 @@ include_once '../includes/navbar.php';
                 <div class="fs-5 mb-5">
                     <span>₱<?php echo number_format($res['product_price'])?></span>
                 </div>
-                <div class="d-flex">
-                    <input class="form-control text-center me-3" name="quantity" type="text" value="1" style="max-width: 3rem" />
-                    <input type="submit"  name="addtocart" id="addtocart" class="btn btn-outline-dark flex-shrink-0 addtocart" value="Add to Cart">
+                <div class="row">
+                    <div class="quantity buttons_added" data-trigger="spinner" >
+                        <input type="button" value="-" class="minus btn-outline-dark" data-spin="down">
+                        <input type="text" class="input-text qty text" name="quantity" value="1" title="quantity">
+                        <input type="button" value="+" class="plus" data-spin="up">
+                    </div>
+                    <div class="col-md-9">
+                        <input type="submit"  name="addtocart" id="addtocart" class="btn btn-outline-dark flex-shrink-0 addtocart mt-4" value="Add to Cart">
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -182,8 +246,10 @@ include_once '../includes/navbar.php';
                                 </ul>
                                 <p class="text-center mb-0 h6">₱<?php echo number_format($product['product_price'])?></p>
                                 <div class="bottom d-flex flex-row justify-content-center">
-                                    <div class="input-group mb-3">
-                                        <input type="number" id="quantity" name="quantity" value="1" title="quantity" class="form-control">
+                                    <div class="quantity buttons_added" data-trigger="spinner" >
+                                        <input type="button" value="-" class="minus btn-outline-dark" data-spin="down">
+                                        <input type="text" class="input-text qty text" name="quantity" value="1" title="quantity">
+                                        <input type="button" value="+" class="plus" data-spin="up">
                                     </div>
                                     <?php
                                     if (isset($_SESSION['isLoggedIn'])) {
@@ -230,5 +296,7 @@ include_once '../includes/modal.php';
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" ></script>
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<script src="../js/jquery.spinner.min.js"></script>
+
 </body>
 </html>

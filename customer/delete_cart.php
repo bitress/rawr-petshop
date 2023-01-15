@@ -10,7 +10,7 @@ if (isset($_GET['product_id'])){
     mysqli_query($con, $sql);
 
 
-    header("Location: index.php");
+    header("Location: cart.php");
 
 
 }

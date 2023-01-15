@@ -67,7 +67,7 @@ if (isset($_POST['editProfile'])){
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Home | ShopOn-it</title>
+    <title>My Cart | Rawr PetShop</title>
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/icons/favicon-16x16.png">
@@ -205,9 +205,15 @@ include '../includes/navbar.php';
         <div class="col-12 col-lg-6 col-xl-7"
         <h5>My Cart</h5>
             <div class="table-responsive">
+                <div class="col-12">
+                    <button type="button" class="btn btn-outline-danger float-end"><i class="bi bi-trash"></i></button>
+                </div>
                 <table class="table">
                     <thead>
                     <tr>
+                        <th> Select All <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" onclick="selectAll(this)">
+                            </div> </th>
                         <th class="d-none d-sm-table-cell"></th>
                         <th class="ps-sm-3">Details</th>
                         <th>Qty</th>
@@ -219,13 +225,19 @@ include '../includes/navbar.php';
                     $id = $row['id'];
 
                     $total_price = 0;
-                    $sql = "SELECT * FROM cart INNER JOIN products ON products.id = cart.product_id INNER JOIN users ON users.id = cart.user_id LEFT JOIN category ON category.category_id = products.category WHERE  users.id = '$id' LIMIT 5";
+                    $sql = "SELECT * FROM cart INNER JOIN products ON products.id = cart.product_id INNER JOIN users ON users.id = cart.user_id LEFT JOIN category ON category.category_id = products.category WHERE  users.id = '$id'";
                     $result = mysqli_query($con, $sql);
+                    if (mysqli_num_rows($result) > 0){
                     while ($cart = mysqli_fetch_array($result)){
                     $total_price += $cart['product_price'] * $cart['quantity'];
 
                     ?>
                     <tr>
+                        <td>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" name="product[]" value="<?php echo $cart['cart_id']; ?>" class="custom-control-input">
+                            </div>
+                        </td>
                         <!-- image -->
                         <td class="d-none d-sm-table-cell">
                             <picture class="d-block bg-light p-3 f-w-20">
@@ -237,7 +249,7 @@ include '../includes/navbar.php';
                         <!-- Details -->
                         <td>
                             <div class="ps-sm-3">
-                                <h6 class="mb-2 fw-bolder">
+                                <h6 class="fw-bolder">
                                     <?php echo $cart['product_name'] ?>
                                 </h6>
                                 <small class="d-block text-muted"><?php echo $cart['category_name'] ?></small>
@@ -256,7 +268,7 @@ include '../includes/navbar.php';
                         <!-- Actions -->
                         <td class="f-h-0">
                             <div class="d-flex justify-content-between flex-column align-items-end h-100">
-                                <i class="ri-close-circle-line ri-lg"></i>
+                                <a href="delete_cart.php?product_id=<?php echo $cart['product_id']; ?>&customer_id=<?php echo $cart['user_id'];?>" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
                                 <p class="fw-bolder mt-3 m-sm-0">₱<?php echo number_format($cart['product_price'] * $cart['quantity']) ?></p>
                             </div>
                         </td>
@@ -266,6 +278,16 @@ include '../includes/navbar.php';
 
                     <?php
 
+                    }
+                    } else {
+
+                    ?>
+
+                        <tr>
+                            <td colspan="5" class="text-center">Your cart is empty! <a href="index.php">Continue Shopping</a> </td>
+                        </tr>
+
+                    <?php
                     }
 
                     ?>
@@ -283,7 +305,7 @@ include '../includes/navbar.php';
             <div class="py-3 border-bottom-white-opacity">
                 <div class="d-flex justify-content-between align-items-center mb-2 flex-column flex-sm-row">
                     <p class="m-0 fw-bolder fs-6">Subtotal</p>
-                    <p class="m-0 fs-6 fw-bolder">$422.99</p>
+                    <p class="m-0 fs-6 fw-bolder">₱ 0.00</p>
                 </div>
                 <div class="d-flex justify-content-between align-items-center flex-column flex-sm-row mt-3 m-sm-0">
                     <p class="m-0 fw-bolder fs-6">Shipping</p>
@@ -294,9 +316,8 @@ include '../includes/navbar.php';
                 <div class="d-flex justify-content-between align-items-center flex-column flex-sm-row">
                     <div>
                         <p class="m-0 fs-5 fw-bold">Grand Total</p>
-                        <span class="text-white opacity-75 small">Inc $45.89 sales tax</span>
                     </div>
-                    <p class="mt-3 m-sm-0 fs-5 fw-bold">$422.99</p>
+                    <p class="mt-3 m-sm-0 fs-5 fw-bold">₱ 0.00</p>
                 </div>
             </div>
 
@@ -315,7 +336,7 @@ include '../includes/navbar.php';
             <!-- / Coupon Code-->
 
             <!-- Checkout Button-->
-            <a href="./checkout.html" class="btn btn-white w-100 text-center mt-3" role="button"><i class="ri-secure-payment-line align-bottom"></i> Proceed to checkout</a>
+            <a href="./checkout.html" class="btn btn-outline-light w-100 text-center mt-3" role="button"><i class="ri-secure-payment-line align-bottom"></i> Proceed to checkout</a>
             <!-- Checkout Button-->
         </div>
      </div>
@@ -340,7 +361,15 @@ if (isset($_SESSION['isLoggedIn'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/js/splide.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-
+<script>
+    function selectAll(source) {
+        checkboxes = document.getElementsByName('product[]');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            checkboxes[i].checked = source.checked;
+        }
+    }
+    selectAll(this)
+</script>
 </body>
 </html>
 

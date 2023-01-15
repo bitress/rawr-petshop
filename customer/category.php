@@ -2,11 +2,7 @@
 
 include_once '../includes/connection.php';
 
-if (isset($_GET['id']) && isset($_GET['name'])){
-    $id = $_GET['id'];
-} else {
-    header("Location: index.php");
-}
+
 
 if (isset($_SESSION['isLoggedIn'])){
     $id = $_SESSION['id'];
@@ -64,14 +60,13 @@ if (isset($_POST['editProfile'])){
     }
 
 }
-//echo json_encode($_SESSION);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Home | ShopOn-it</title>
+    <title><?php echo $_GET['name'] ?> | ShopOn-it</title>
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/icons/favicon-16x16.png">
@@ -154,8 +149,7 @@ if (isset($_POST['editProfile'])){
 
 
         .bottom{
-            padding: 10px;
-            padding-top: 30px;
+            padding: 30px 10px 10px;
         }
         .add {
 
@@ -172,6 +166,63 @@ if (isset($_POST['editProfile'])){
             height: 15vw;
             object-fit: cover;
         }
+
+
+        .quantity {
+            display: inline-block; }
+
+        .quantity .input-text.qty {
+            width: 35px;
+            height: 39px;
+            padding: 0 5px;
+            text-align: center;
+            background-color: transparent;
+            border: 1px solid #efefef;
+        }
+
+        .quantity.buttons_added {
+            text-align: left;
+            position: relative;
+            white-space: nowrap;
+            vertical-align: top; }
+
+        .quantity.buttons_added input {
+            display: inline-block;
+            margin: 0;
+            vertical-align: top;
+            box-shadow: none;
+        }
+
+        .quantity.buttons_added .minus,
+        .quantity.buttons_added .plus {
+            padding: 7px 10px 8px;
+            height: 41px;
+            background-color: #ffffff;
+            border: 1px solid #efefef;
+            cursor:pointer;}
+
+        .quantity.buttons_added .minus {
+            border-right: 0; }
+
+        .quantity.buttons_added .plus {
+            border-left: 0; }
+
+        .quantity.buttons_added .minus:hover,
+        .quantity.buttons_added .plus:hover {
+            background: #eeeeee; }
+
+        .quantity input::-webkit-outer-spin-button,
+        .quantity input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            margin: 0; }
+
+        .quantity.buttons_added .minus:focus,
+        .quantity.buttons_added .plus:focus {
+            outline: none; }
+
+
+
 
     </style>
 </head>
@@ -247,7 +298,11 @@ include '../includes/navbar.php';
 
             <div class="row">
                 <?php
-
+                if (isset($_GET['id']) && isset($_GET['name'])){
+                    $id = $_GET['id'];
+                } else {
+                    header("Location: index.php");
+                }
                 $sql = "SELECT * FROM products LEFT JOIN category ON category.category_id = products.category WHERE category_id = '$id'";
                 $result = mysqli_query($con, $sql);
                 if (mysqli_num_rows($result) > 0){
@@ -271,8 +326,10 @@ include '../includes/navbar.php';
                                         </ul>
                                         <p class="text-center mb-0">₱<?php echo number_format($product['product_price'])?></p>
                                         <div class="bottom d-flex flex-row justify-content-center">
-                                            <div class="input-group mb-3">
-                                                <input type="number" id="quantity" name="quantity" value="1" title="quantity" class="form-control">
+                                            <div class="quantity buttons_added" data-trigger="spinner" >
+                                                <input type="button" value="-" class="minus btn-outline-dark" data-spin="down">
+                                                <input type="text" class="input-text qty text" name="quantity" value="1" title="quantity">
+                                                <input type="button" value="+" class="plus" data-spin="up">
                                             </div>
                                             <?php
                                             if (isset($_SESSION['isLoggedIn'])) {
@@ -300,7 +357,7 @@ include '../includes/navbar.php';
                 ?>
             </div>
         </div>
-
+    </div>
 
 
 
@@ -322,6 +379,8 @@ if (isset($_SESSION['isLoggedIn'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/js/splide.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<script src="../js/jquery.spinner.min.js"></script>
+
 <script>
 
     var splide = new Splide('.splide', {
