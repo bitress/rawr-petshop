@@ -13,53 +13,7 @@ if (isset($_SESSION['isLoggedIn'])){
 }
 
 
-if (isset($_POST['addtocart'])){
 
-    // User id
-    $user_id = $row['id'];
-    $product = $_POST['product_id'];
-    $quantity = $_POST['quantity'];
-
-    // Check if the item is already in the cart
-    $result = mysqli_query($con, "SELECT * FROM cart WHERE product_id = '$product' AND user_id = '$user_id'");
-    if (mysqli_num_rows($result) > 0) {
-        // Item is already in the cart, update quantity
-        mysqli_query($con, "UPDATE `cart` SET quantity = quantity + '$quantity' WHERE product_id = '$product' AND user_id = '$user_id'");
-        header("Location: index.php");
-    } else {
-        // Item is not in the cart, insert new row
-        mysqli_query($con, "INSERT INTO `cart` (product_id, user_id, quantity) VALUES ('$product', '$user_id', '$quantity')");
-        header("Location: index.php");
-    }
-}
-
-
-if (isset($_POST['editProfile'])){
-
-    $id = $row['id'];
-    $firstname = $_POST['firstname'];
-    $middlename = $_POST['middlename'];
-    $lastname = $_POST['lastname'];
-    $address = $_POST['address'];
-    $password = $_POST['password'];
-
-    if ($password == ""){
-        // Dont change password
-        $newpassword = $row['password'];
-    } else {
-        $newpassword = md5($password);
-    }
-
-    $sql = "UPDATE users SET password = '$newpassword', firstname = '$firstname', middlename = '$middlename', lastname = '$lastname', address = '$address' WHERE id = '$id'";
-    $result = mysqli_query($con, $sql);
-
-    if ($result === TRUE){
-
-        header("Location: index.php?success=Profile edit success!");
-
-    }
-
-}
 
 if (isset($_POST['continue_checkout'])){
 

@@ -60,7 +60,18 @@ if (isset($_POST['editProfile'])){
     }
 
 }
-//echo json_encode($_SESSION);
+
+if (isset($_GET['update_cart'])){
+
+    $quantity = $_GET['quantity'];
+    $product_id = $_GET['product_id'];
+    $user_id = $_GET['user_id'];
+
+    $query = mysqli_query($con, "UPDATE cart SET `quantity` = '$quantity' WHERE `product_id` = '$product_id' AND user_id = '$user_id'");
+
+    header("Location: cart.php");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -169,6 +180,62 @@ if (isset($_POST['editProfile'])){
             object-fit: cover;
         }
 
+
+        .quantity {
+            display: inline-block; }
+
+        .quantity .input-text.qty {
+            width: 35px;
+            height: 39px;
+            padding: 0 5px;
+            text-align: center;
+            background-color: transparent;
+            border: 1px solid #efefef;
+        }
+
+        .quantity.buttons_added {
+            text-align: left;
+            position: relative;
+            white-space: nowrap;
+            vertical-align: top; }
+
+        .quantity.buttons_added input {
+            display: inline-block;
+            margin: 0;
+            vertical-align: top;
+            box-shadow: none;
+        }
+
+        .quantity.buttons_added .minus,
+        .quantity.buttons_added .plus {
+            padding: 7px 10px 8px;
+            height: 41px;
+            background-color: #ffffff;
+            border: 1px solid #efefef;
+            cursor:pointer;}
+
+        .quantity.buttons_added .minus {
+            border-right: 0; }
+
+        .quantity.buttons_added .plus {
+            border-left: 0; }
+
+        .quantity.buttons_added .minus:hover,
+        .quantity.buttons_added .plus:hover {
+            background: #eeeeee; }
+
+        .quantity input::-webkit-outer-spin-button,
+        .quantity input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            margin: 0; }
+
+        .quantity.buttons_added .minus:focus,
+        .quantity.buttons_added .plus:focus {
+            outline: none; }
+
+
+
     </style>
 </head>
 <body>
@@ -260,6 +327,15 @@ include '../includes/navbar.php';
 
                         <!-- Qty -->
                         <td>
+                            <div class="quantity buttons_added" data-trigger="spinner" >
+                                    <input type="button" value="-" class="minus btn-outline-dark" data-spin="down">
+                                    <input type="text" class="input-text qty text" name="quantity" id="qnt_<?php echo $cart['product_id'] ?>" value="<?php echo $cart['quantity'] ?>" title="quantity">
+                                    <input type="button" value="+" class="plus" data-spin="up">
+                                    <input type="hidden" name="product_id" value="<?php echo $cart['product_id'] ?>">
+                                    <input type="hidden" name="user_id" value="<?php echo $cart['user_id'] ?>">
+                                    <button type="button" onclick="updateCart(<?php echo $cart['product_id'] ?>, <?php echo $cart['user_id'] ?>);" name="update_cart" class="btn btn-sm btn-outline-success"><i class="bi bi-cart-check"></i></button>
+                            <br>
+                            </div>
                             <div class="px-3">
                                 <span class="small text-muted mt-1"><?php echo ($cart['quantity']) ?> @ ₱<?php echo number_format($cart['product_price']) ?></span>
                             </div>
@@ -369,6 +445,8 @@ if (isset($_SESSION['isLoggedIn'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/js/splide.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<script src="../js/jquery.spinner.min.js"></script>
+
 <script>
     function selectAll(source) {
         checkboxes = document.getElementsByName('product[]');
@@ -377,6 +455,15 @@ if (isset($_SESSION['isLoggedIn'])) {
         }
     }
     selectAll(this)
+
+
+    function updateCart(product_id, user_id){
+
+        var quantity = document.getElementById("qnt_"+product_id).value;
+
+        window.location = 'cart.php?update_cart=1&product_id='+product_id+'&user_id='+user_id+'&quantity='+quantity;
+
+    }
 </script>
 </body>
 </html>
