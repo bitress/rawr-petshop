@@ -2,10 +2,14 @@
 
 include_once '../includes/connection.php';
 
+if (isset($_GET['query'])){
+    $query = $_GET['query'];
+} else {
+    header("Location: products.php");
+}
+
 if (isset($_SESSION['isLoggedIn'])){
     $id = $_SESSION['id'];
-
-
     $sql = "SELECT * FROM users WHERE users.id = '$id'";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
@@ -66,7 +70,7 @@ if (isset($_POST['editProfile'])){
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Home | Rawr PetShop</title>
+    <title>Search | Rawr PetShop</title>
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/icons/favicon-16x16.png">
@@ -74,8 +78,7 @@ if (isset($_POST['editProfile'])){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/css/splide.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/css/splide.min.css">
     <style>
         body {
             overflow: scroll;
@@ -149,12 +152,11 @@ if (isset($_POST['editProfile'])){
         }
 
 
-
         .bottom{
             padding: 10px;
             padding-top: 30px;
         }
-        .add{
+        .add {
 
             height: 38px;
             border-radius: 4px;
@@ -162,6 +164,7 @@ if (isset($_POST['editProfile'])){
             padding-right: 22px;
             padding-left: 20px;
         }
+
 
         .card-img {
             width: 100%;
@@ -232,12 +235,13 @@ if (isset($_POST['editProfile'])){
 <body>
 
 <?php
-    include '../includes/navbar.php';
+include '../includes/navbar.php';
 ?>
 
 <div class="container py-5">
+    <div class="row mb-4">
 
-    <div class="row">
+
 
         <div class="col-12">
             <div class="carousel mb-4">
@@ -252,7 +256,7 @@ if (isset($_POST['editProfile'])){
 
         <div class="col-12">
             <div class=" lh-1 fs-1 text-center mb-2 p-2">
-                <h3 class="text-center">Categories</h3>
+                <h3 class="text-center">Search Results For '<span style="color: red"><?php echo $query; ?></span>' </h3>
             </div>
 
             <div class="row g-0">
@@ -281,22 +285,18 @@ if (isset($_POST['editProfile'])){
                         </div>
                     </div>
                 </div>
-            </div>
+            </div
         </div>
     </div>
 
 
 
-    <div class="row g-0">
+    <div class="row">
         <div class="col-lg-12">
-            <div class="lh-1 fs-1 bg-light p-4 m-2">
+            <div class="bg-light lh-1 fs-1 mb-2">
                 <div class="row">
                     <div class="col">
-                        <h3>Top Products</h3>
-                        <p class="text-muted h6">We've sorted through our feed to put together a collection of our products perfect for your pet.</p>
-                    </div>
-                    <div class="col mx-auto py-1">
-                        <a href="products.php" class="btn btn-outline-dark btn-sm float-end">Show all Products</a>
+                        <h3 class="text-center">Products</h3>
                     </div>
                 </div>
 
@@ -304,56 +304,54 @@ if (isset($_POST['editProfile'])){
 
             <div class="row">
                 <?php
-                $sql = "SELECT * FROM products LEFT JOIN category ON category.category_id = products.category ORDER BY RAND() LIMIT 4";
+                $sql = "SELECT * FROM products LEFT JOIN category ON category.category_id = products.category WHERE `product_name` LIKE '%$query%' OR `category_name` LIKE '%$query%'";
                 $result = mysqli_query($con, $sql);
                 if (mysqli_num_rows($result) > 0){
-                while($product = mysqli_fetch_assoc($result)){
-                ?>
-                <div class="col-sm-3 col-6">
-                    <div class="card mb-4 product-wap rounded-0">
-                        <div class="card rounded-0">
-                            <img class="card-img rounded-0 img-fluid" src="<?php echo WEBSITE_DOMAIN . $product['product_image']?>">
-                            <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                    while($product = mysqli_fetch_assoc($result)){
+                        ?>
+                        <div class="col-sm-3 col-6 mb-2">
+                            <div class="card product-wap rounded-0">
+                                <div class="card rounded-0">
+                                    <img class="card-img rounded-0 img-fluid" src="<?php echo WEBSITE_DOMAIN . $product['product_image']?>">
+                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
 
-                            </div>
-                        </div>
-
-                        <form action="index.php" method="post">
-                            <input type="hidden" name="product_id" value="<?php echo $product['id']?>">
-                        <div class="card-body">
-                            <span class="h6"><a href="product.php?id=<?php echo $product['id']?>" class="text-decoration-none"><?php echo substr($product['product_name'], 0, 50 ) . "...";?></a> </span>
-                            <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                <li class="fw-light"><a href="category.php?id=<?php echo $product['category']?>&name=<?php echo urlencode($product['category_name'])?>"><?php echo $product['category_name']?></a> </li>
-
-                            </ul>
-                            <p class="text-center mb-0 h6">₱<?php echo number_format($product['product_price'])?></p>
-                            <div class="bottom d-flex flex-row justify-content-center">
-                                <div class="quantity buttons_added" data-trigger="spinner" >
-                                    <input type="button" value="-" class="minus btn-outline-dark" data-spin="down">
-                                    <input type="text" class="input-text qty text" name="quantity" value="1" title="quantity">
-                                    <input type="button" value="+" class="plus" data-spin="up">
+                                    </div>
                                 </div>
-                                <?php
-                                if (isset($_SESSION['isLoggedIn'])) {
-                                    ?>
-                                    <button name="addtocart"  class="btn btn-outline-success add btn-sm addtocart" type="submit">
-                                        <i class="bi bi-cart"></i>                                    </button>
-                                    <?php
-                                } else {
-                                    ?>
-                                    <button onclick="window.location='../login.php';" class="btn btn-outline-success add btn-sm" type="button">
-                                        <i class="bi bi-cart"></i>                                    </button>
-                                    <?php
-                                }
-                                ?>
-                            </div>
 
+                                <form action="index.php" method="post">
+                                    <input type="hidden" name="product_id" value="<?php echo $product['id']?>">
+                                    <div class="card-body">
+                                        <span class="h6"><a href="#" class="text-decoration-none"><?php echo substr($product['product_name'], 0, 50 ) . "...";?></a> </span>
+                                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                            <li class="fw-light"><a href="category.php?id=<?php echo $product['category']?>&name=<?php echo urlencode($product['category_name'])?>"><?php echo $product['category_name']?></a> </li>
+                                        </ul>
+                                        <p class="text-center mb-0">₱<?php echo number_format($product['product_price'])?></p>
+                                        <div class="bottom d-flex flex-row justify-content-center">
+                                            <div class="quantity buttons_added" data-trigger="spinner" >
+                                                <input type="button" value="-" class="minus btn-outline-dark" data-spin="down">
+                                                <input type="text" class="input-text qty text" name="quantity" value="1" title="quantity">
+                                                <input type="button" value="+" class="plus" data-spin="up">
+                                            </div>
+                                            <?php
+                                            if (isset($_SESSION['isLoggedIn'])) {
+                                                ?>
+                                                <button name="addtocart"  class="btn btn-outline-dark add btn-sm addtocart" type="submit">
+                                                    <i class="bi bi-cart"></i>                                    </button>
+                                                <?php
+                                            } else {
+                                                ?>
+                                                <button onclick="window.location='../login.php';" class="btn btn-outline-dark add btn-sm" type="button">
+                                                    <i class="bi bi-cart"></i>                                    </button>
+                                                <?php
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                        </form>
-                    </div>
-                </div>
-                    <?php
-                }
+                        <?php
+                    }
                 } else {
                     echo "No products to show!";
                 }
@@ -361,30 +359,30 @@ if (isset($_POST['editProfile'])){
             </div>
         </div>
 
+
+
+
     </div>
 </div>
-
 
 <footer class="footer text-center bg-light p-4">
     Copyright &copy; 2023 - Rawr Pet Shop
 </footer>
 
 
+<?php
 
-    <?php
 
+if (isset($_SESSION['isLoggedIn'])) {
+    include_once '../includes/modal.php';
+}
 
-    if (isset($_SESSION['isLoggedIn'])) {
-        include_once '../includes/modal.php';
-    }
-
-    ?>
+?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/js/splide.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <script src="../js/jquery.spinner.min.js"></script>
-
 <script>
 
     var splide = new Splide('.splide', {
@@ -445,7 +443,7 @@ if (isset($_POST['editProfile'])){
         restart();
     });
 
-        $('#category_select').change(function() {
+    $('#category_select').change(function() {
         window.location = $(this).val();
     });
 

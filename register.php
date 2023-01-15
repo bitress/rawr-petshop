@@ -33,7 +33,7 @@ if (isset($_POST['submit'])) {
                 $stmt = mysqli_query($con, $sql);
                 if ($stmt === true) {
 
-                    $target = "../images/pfp/" . basename($profile_picture);
+                    $target = "images/pfp/" . basename($profile_picture);
                     move_uploaded_file($_FILES['profile_picture']['tmpname'], $target);
 
                     header("Location: login.php?success=You may now login");

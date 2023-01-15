@@ -10,9 +10,9 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-lg-0 ms-lg-4 w-75">
 
-                <form class="d-flex ms-auto me-auto w-100">
+                <form class="d-flex ms-auto me-auto w-100" method="get" action="search.php">
                     <div class="input-group">
-                        <input class="form-control" id="searchbox" type="search" placeholder="Search" aria-label="Search">
+                        <input class="form-control" name="query" id="searchbox" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-dark" type="submit"><i class="bi bi-search"></i></button>
                     </div>
                 </form>
@@ -101,7 +101,7 @@
 
 
                 <li class="nav-item">
-                    <button data-bs-toggle="modal" data-bs-target="#myProfile" href="#" class="btn btn-outline btn-sm" type="button">
+                    <button onclick="window.location='profile.php';" class="btn btn-outline btn-sm" type="button">
                         <i class="bi-person me-1"></i>
                         Profile
                     </button>
