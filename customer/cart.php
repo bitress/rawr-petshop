@@ -202,9 +202,9 @@ include '../includes/navbar.php';
 
     <div class="row">
 
-        <div class="col-12 col-lg-6 col-xl-7"
+        <div class="col-12 col-lg-6 col-xl-7">
         <h5>My Cart</h5>
-            <div class="table-responsive">
+            <div class="table-responsive m-2">
                 <div class="col-12">
                     <button type="button" class="btn btn-outline-danger float-end"><i class="bi bi-trash"></i></button>
                 </div>
@@ -294,6 +294,9 @@ include '../includes/navbar.php';
 
                     </tbody>
                 </table>
+                <div class="float-end">
+                    <button class="btn btn-success">Continue Checkout</button>
+                </div>
             </div>
 
 
@@ -336,7 +339,7 @@ include '../includes/navbar.php';
             <!-- / Coupon Code-->
 
             <!-- Checkout Button-->
-            <a href="./checkout.html" class="btn btn-outline-light w-100 text-center mt-3" role="button"><i class="ri-secure-payment-line align-bottom"></i> Proceed to checkout</a>
+            <button disabled class="btn btn-outline-light w-100 text-center mt-3" role="button"><i class="ri-secure-payment-line align-bottom"></i> Proceed to checkout</button>
             <!-- Checkout Button-->
         </div>
      </div>
@@ -345,6 +348,7 @@ include '../includes/navbar.php';
 
     </div>
 </div>
+
 
 <footer class="footer text-center bg-light p-4">
     Copyright &copy; 2023 - Rawr Pet Shop

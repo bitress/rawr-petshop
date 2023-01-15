@@ -12,6 +12,7 @@ if (isset($_POST['submit'])) {
     $password = mysqli_real_escape_string($con, $_POST['password']);
     $confirm_password = mysqli_real_escape_string($con, $_POST['repeat_password']);
     $profile_picture = $_FILES['profile_picture']['name'];
+    $tmp_image = $_FILES['profile_picture']['tmp_name'];
 
     if (empty($username) ||  empty($firstname) || empty($lastname) || empty($password) || empty($confirm_password) || empty($profile_picture) || empty($address)) {
         header("Location: register.php?error=All fields are required!");
@@ -34,7 +35,7 @@ if (isset($_POST['submit'])) {
                 if ($stmt === true) {
 
                     $target = "images/pfp/" . basename($profile_picture);
-                    move_uploaded_file($_FILES['profile_picture']['tmpname'], $target);
+                    move_uploaded_file($tmp_image, $target);
 
                     header("Location: login.php?success=You may now login");
                 } else {
