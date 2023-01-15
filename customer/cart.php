@@ -205,6 +205,7 @@ include '../includes/navbar.php';
         <div class="col-12 col-lg-6 col-xl-7">
         <h5>My Cart</h5>
             <div class="table-responsive m-2">
+                <form method="post" action="checkout.php">
                 <div class="col-12">
                     <button type="button" class="btn btn-outline-danger float-end"><i class="bi bi-trash"></i></button>
                 </div>
@@ -295,8 +296,9 @@ include '../includes/navbar.php';
                     </tbody>
                 </table>
                 <div class="float-end">
-                    <button class="btn btn-success">Continue Checkout</button>
+                    <button name="checkout" type="submit" class="btn btn-success">Checkout</button>
                 </div>
+                </form>
             </div>
 
 
@@ -343,6 +345,8 @@ include '../includes/navbar.php';
             <!-- Checkout Button-->
         </div>
      </div>
+
+
 
 
 

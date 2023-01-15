@@ -32,35 +32,6 @@ if (isset($_POST['addtocart'])){
         header("Location: index.php");
     }
 }
-
-
-if (isset($_POST['editProfile'])){
-
-    $id = $row['id'];
-    $firstname = $_POST['firstname'];
-    $middlename = $_POST['middlename'];
-    $lastname = $_POST['lastname'];
-    $address = $_POST['address'];
-    $password = $_POST['password'];
-
-    if ($password == ""){
-        // Dont change password
-        $newpassword = $row['password'];
-    } else {
-        $newpassword = md5($password);
-    }
-
-    $sql = "UPDATE users SET password = '$newpassword', firstname = '$firstname', middlename = '$middlename', lastname = '$lastname', address = '$address' WHERE id = '$id'";
-    $result = mysqli_query($con, $sql);
-
-    if ($result === TRUE){
-
-        header("Location: index.php?success=Profile edit success!");
-
-    }
-
-}
-//echo json_encode($_SESSION);
 ?>
 <!DOCTYPE html>
 <html lang="en">
