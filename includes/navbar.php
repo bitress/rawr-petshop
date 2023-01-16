@@ -9,6 +9,9 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-lg-0 ms-lg-4" style="width: 65%">
+                <li class="nav-item">
+                    <a class="nav-link" href="about.php">About</a>
+                </li>
 
                 <form class="d-flex ms-auto me-auto w-100" method="get" action="search.php">
                     <div class="input-group">
@@ -16,6 +19,8 @@
                         <button class="btn btn-outline-dark" type="submit"><i class="bi bi-search"></i></button>
                     </div>
                 </form>
+
+
 
             </ul>
 
