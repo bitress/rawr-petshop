@@ -293,7 +293,7 @@ include '../includes/navbar.php';
                     $id = $row['id'];
 
                     $total_price = 0;
-                    $sql = "SELECT * FROM cart INNER JOIN products ON products.id = cart.product_id INNER JOIN users ON users.id = cart.user_id LEFT JOIN category ON category.category_id = products.category WHERE  users.id = '$id'";
+                    $sql = "SELECT * FROM cart INNER JOIN products ON products.id = cart.product_id INNER JOIN users ON users.id = cart.user_id LEFT JOIN category ON category.category_id = products.category WHERE  users.id = '$id' AND status = '0'";
                     $result = mysqli_query($con, $sql);
                     if (mysqli_num_rows($result) > 0){
                     while ($cart = mysqli_fetch_array($result)){

@@ -1,7 +1,7 @@
 <?php
 
     function countCart($con, $user){
-        $query = "SELECT COUNT(*) as count FROM cart WHERE user_id = '$user'";
+        $query = "SELECT COUNT(*) as count FROM cart WHERE user_id = '$user' AND status = '0'";
         $result = mysqli_query($con, $query);
         $row = mysqli_fetch_assoc($result);
         return $row['count'];

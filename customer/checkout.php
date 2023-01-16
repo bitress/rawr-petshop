@@ -24,7 +24,10 @@ if (isset($_POST['continue_checkout'])){
 
     foreach ($product as $p){
 
-        $sql = "INSERT INTO checkout (`user_id`, `cart_id`) VALUES ('$user', '$p')";
+        $sql = "INSERT INTO checkout (`user_id`, `cart_id`, `message`) VALUES ('$user', '$p', 'Your package has been confirmed!')";
+        $result = mysqli_query($con, $sql);
+
+        $sql = "UPDATE cart SET status = '1' WHERE cart_id = '$p'";
         $result = mysqli_query($con, $sql);
     }
 
@@ -167,6 +170,7 @@ include '../includes/navbar.php';
                             <?php
                             if (isset($_POST['checkout'])) {
                                 $id = $row['id'];
+
                                 $cart =  implode(',', $_POST['product']);
 
                                 $sql = "SELECT cart.product_id, cart.user_id, cart.quantity, products.*, category.* FROM cart INNER JOIN products ON products.id = cart.product_id INNER JOIN users ON users.id = cart.user_id LEFT JOIN category ON category.category_id = products.category WHERE cart.cart_id IN ($cart) AND users.id = '$id'";

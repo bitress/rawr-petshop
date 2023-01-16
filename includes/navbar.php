@@ -8,7 +8,7 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-lg-0 ms-lg-4 w-75">
+            <ul class="navbar-nav me-auto mb-lg-0 ms-lg-4" style="width: 65%">
 
                 <form class="d-flex ms-auto me-auto w-100" method="get" action="search.php">
                     <div class="input-group">
@@ -64,7 +64,7 @@
                                     $id = $row['id'];
 
                                     $total_price = 0;
-                                    $sql = "SELECT * FROM cart INNER JOIN products ON products.id = cart.product_id INNER JOIN users ON users.id = cart.user_id LEFT JOIN category ON category.category_id = products.category WHERE  users.id = '$id' LIMIT 5";
+                                    $sql = "SELECT * FROM cart INNER JOIN products ON products.id = cart.product_id INNER JOIN users ON users.id = cart.user_id LEFT JOIN category ON category.category_id = products.category WHERE  users.id = '$id' AND cart.status = '0' LIMIT 5";
                                     $result = mysqli_query($con, $sql);
                                     while ($cart = mysqli_fetch_array($result)){
                                     $total_price += $cart['product_price'] * $cart['quantity'];
@@ -92,6 +92,52 @@
                                     <a href="cart.php" class="btn btn-outline-dark btn-sm">Show Cart <i class="bi bi-cart"></i></a>
                                 </div>
                             </div> <!--end shopping-cart -->
+                        </div>
+                    </div>
+
+                </li>
+
+
+
+                <li class="nav-item">
+
+                    <div class="dropdown dropstart">
+                        <button class="btn btn-outline btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" >
+                            <i class="bi bi-chat-left"></i>
+                            <!--                            <span class="badge bg-dark text-white ms-1 rounded-pill">--><?php //echo countCart($con,  $row['id'])?><!--</span>-->
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                            <div class="shopping-cart active">
+                                <div class="shopping-cart-header">
+                                Messages
+                                </div>
+                                    <ul class="list-group bg-light">
+
+                                        <?php
+                                        $id = $row['id'];
+                                        $sql = "SELECT * FROM checkout WHERE user_id = '$id'";
+                                        $result = mysqli_query($con, $sql);
+                                        while ($res = mysqli_fetch_assoc($result)){
+
+                                            if ($res['status'] == '0'){
+                                                $status = 'Your package has been confirmed!';
+                                            } else if ($res['status'] == '1'){
+                                                $status = 'The courier has picked up your product!';
+                                            } else if ($res['status'] == '2'){
+                                                $status = 'Your package is now on the way!';
+                                            } else {
+                                                $status = '';
+                                            }
+
+                                        ?>
+
+                                    <a href="receipt.php?id=<?php echo $res['cart_id']; ?>" class="list-group-item list-group-item-action"><?php echo $status; ?></a>
+                                        <?php
+                                        }
+                                        ?>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 

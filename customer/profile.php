@@ -13,35 +13,16 @@ if (isset($_SESSION['isLoggedIn'])){
 }
 
 
-if (isset($_POST['addtocart'])){
-
-    // User id
-    $user_id = $row['id'];
-    $product = $_POST['product_id'];
-    $quantity = $_POST['quantity'];
-
-    // Check if the item is already in the cart
-    $result = mysqli_query($con, "SELECT * FROM cart WHERE product_id = '$product' AND user_id = '$user_id'");
-    if (mysqli_num_rows($result) > 0) {
-        // Item is already in the cart, update quantity
-        mysqli_query($con, "UPDATE `cart` SET quantity = quantity + '$quantity' WHERE product_id = '$product' AND user_id = '$user_id'");
-        header("Location: index.php");
-    } else {
-        // Item is not in the cart, insert new row
-        mysqli_query($con, "INSERT INTO `cart` (product_id, user_id, quantity) VALUES ('$product', '$user_id', '$quantity')");
-        header("Location: index.php");
-    }
-}
+if (isset($_POST['submit'])){
 
 
-if (isset($_POST['editProfile'])){
-
-    $id = $row['id'];
     $firstname = $_POST['firstname'];
     $middlename = $_POST['middlename'];
     $lastname = $_POST['lastname'];
     $address = $_POST['address'];
-    $password = $_POST['password'];
+    $username = $_POST['username'];
+    $password = md5($_POST['password']);
+    $id = $row['id'];
 
     if ($password == ""){
         // Dont change password
@@ -50,14 +31,66 @@ if (isset($_POST['editProfile'])){
         $newpassword = md5($password);
     }
 
-    $sql = "UPDATE users SET password = '$newpassword', firstname = '$firstname', middlename = '$middlename', lastname = '$lastname', address = '$address' WHERE id = '$id'";
-    $result = mysqli_query($con, $sql);
 
-    if ($result === TRUE){
+// Check if image file is a actual image or fake image
+    if(!empty($_FILES["profile_picture"])) {
 
-        header("Location: index.php?success=Profile edit success!");
+        // File upload
+        $target_dir = "../images/pfp/";
+        $target_file = $target_dir . basename($_FILES["profile_picture"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
+//        $check = getimagesize($_FILES["profile_picture"]["tmp_name"]);
+//        if($check !== false) {
+//            echo "File is an image - " . $check["mime"] . ".";
+//            $uploadOk = 1;
+//        } else {
+//            echo "File is not an image.";
+//            $uploadOk = 0;
+//        }
+
+//        Check file size
+    if ($_FILES["profile_picture"]["size"] > 500000) {
+        echo "Sorry, your file is too large.";
+        $uploadOk = 0;
     }
+
+    // Allow certain file formats
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif" ) {
+//            echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+            $uploadOk = 0;
+        }
+
+    // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+//            echo "Sorry, your file was not uploaded.";
+
+    // if everything is ok, try to upload file
+        } else {
+            if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
+//                echo "The file ". basename( $_FILES["profile_picture"]["name"]). " has been uploaded.";
+            } else {
+//                echo "Sorry, there was an error uploading your file.";
+            }
+     }
+        $profile_picture = $_FILES["profile_picture"]["name"];
+} else {
+        $profile_picture = $_POST['original_pfp'];
+    }
+
+
+
+
+    $sql = "UPDATE users SET firstname='$firstname', middlename='$middlename', lastname='$lastname', address='$address', username='$username', profile_picture='$profile_picture', password='$newpassword' WHERE id=$id";
+
+    if (mysqli_query($con, $sql)) {
+        echo "Record updated successfully";
+    } else {
+        echo "Error updating record: " . mysqli_error($con);
+    }
+
 
 }
 //echo json_encode($_SESSION);
@@ -261,8 +294,10 @@ include '../includes/navbar.php';
 
                             <div class="col-md-12">
                                 <label class="mb-2 text-muted">Profile Picture</label>
-                                <input type="file" id="profile_picture" class="form-control" name="profile_picture"  required><br>
+                                <input type="file" id="profile_picture" class="form-control" name="profile_picture" ><br>
                             </div>
+
+                            <input type="hidden" name="original_pfp" value="<?php echo $row['profile_picture']; ?>">
 
                             <div class="col-md-4">
                                 <label class="mb-2 text-muted" for="username">Firstname</label>
@@ -296,7 +331,7 @@ include '../includes/navbar.php';
                             <div class="mb-2 w-100">
                                 <label class="text-muted" for="password">Password</label>
                             </div>
-                            <input id="password" type="password" class="form-control" name="password" required>
+                            <input id="password" type="password" class="form-control" name="password" >
                         </div>
 
 
@@ -304,7 +339,7 @@ include '../includes/navbar.php';
                             <div class="mb-2 w-100">
                                 <label class="text-muted" for="repeat_password">Confirm Password</label>
                             </div>
-                            <input id="repeat_password" type="password" class="form-control" name="repeat_password" required>
+                            <input id="repeat_password" type="password" class="form-control" name="repeat_password"     >
                         </div>
 
                         <div class="d-flex align-items-center">

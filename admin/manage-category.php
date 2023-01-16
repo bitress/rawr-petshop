@@ -26,6 +26,7 @@ if (isset($_POST['addProduct'])){
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Admin | ShopOn-it</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"></head>
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
@@ -84,12 +85,13 @@ if (isset($_POST['addProduct'])){
 
 
         <div class="col-md-9 col-lg-10">
-            <h3>Orders</h3>
+            <h3>Category</h3>
 
 
             <div class="table-responsive">
                 <table class="table" id="myTable">
                     <thead>
+                    <th>Category Image</th>
                     <th>Category ID</th>
                     <th>Category Name</th>
                     <th>Actions</th>
@@ -104,13 +106,47 @@ if (isset($_POST['addProduct'])){
                             ?>
                             <tr>
                                 <td><?php echo $product['category_id']?></td>
+                                <td><?php echo $product['category_id']?></td>
                                 <td><?php echo $product['category_name']?></td>
                                 <td>
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-primary">Edit</button>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit">Edit</button>
                                         <button type="button" class="btn btn-danger">Delete</button>
                                     </div>
-                                    
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Category</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form method="post" action="manage-category.php">
+                                                        <input type="hidden" name="category_id">
+
+                                                        <div class="mb-3">
+                                                            <label>Enter Category Name</label>
+                                                            <input type="text" name="name" class="form-control">
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label>Enter Image</label>
+                                                            <input type="file" name="image" class="form-control">
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                 </td>
                             </tr>
                             <?php

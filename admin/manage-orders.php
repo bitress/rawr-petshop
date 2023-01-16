@@ -14,42 +14,6 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
     header("Location: index.php");
 }
 
-if (isset($_POST['addProduct'])){
-
-    $product_name = $_POST['product_name'];
-    $product_price = $_POST['product_price'];
-    $category = $_POST['category'];
-
-    if(isset($_FILES['product_image'])){
-        $error = "";
-        $file_name = $_FILES['product_image']['name'];
-        $file_tmp = $_FILES['product_image']['tmp_name'];
-
-        // Get file extension
-        $array = explode('.', $_FILES['product_image']['name']);
-        $file_ext=strtolower(end($array));
-
-        $extensions= array("jpeg","jpg","png","webp");
-
-        if(in_array($file_ext,$extensions)=== false){
-            $error ="Please choose a JPEG or PNG file.";
-        }
-
-        if($error == "") {
-            $product_image = "products/".$file_name;
-            move_uploaded_file($file_tmp, "../products/".$file_name);
-
-            $sql = "INSERT INTO products (product_name, product_price, category, product_image) VALUES ('$product_name', '$product_price', '$category', '$product_image')";
-            mysqli_query($con, $sql);
-            header("Location: index.php");
-
-        }else{
-            print_r($error);
-        }
-    }
-
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,6 +21,7 @@ if (isset($_POST['addProduct'])){
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Admin | ShopOn-it</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"></head>
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
@@ -126,6 +91,8 @@ if (isset($_POST['addProduct'])){
                     <th>Product</th>
                     <th>Datetime</th>
                     <th>Total</th>
+                    <th>Status</th>
+                    <th>Action</th>
                     </thead>
                     <tbody>
                     <?php
@@ -134,6 +101,17 @@ if (isset($_POST['addProduct'])){
                     $result = mysqli_query($con, $sql);
                     if (mysqli_num_rows($result) > 0){
                         while($product = mysqli_fetch_assoc($result)){
+
+                            if ($product['status'] == '0'){
+                                $status = 'Confirmed';
+                            } else if ($product['status'] == '1'){
+                                $status = 'Picked up by the Courier';
+                            } else if ($product['status'] == '2'){
+                                $status = 'Delivered';
+                            } else {
+                                $status = '';
+                            }
+
                             ?>
                             <tr>
                                 <td><?php echo $product['id']?></td>
@@ -141,7 +119,40 @@ if (isset($_POST['addProduct'])){
                                 <td><?php echo $product['product_name']?></td>
                                 <td><?php echo $product['datetime']?></td>
                                 <td><?php echo $product['quantity'] * $product['product_price']?></td>
+                                <td><?php echo $status; ?></td>
+                                <td>
+
+                                    <button class="btn btn-outine-info" type="button" data-bs-toggle="modal" data-bs-target="#edit_<?php echo $product['id']?>"><i class="bi bi-pencil-square"></i></button>
+
+                                </td>
                             </tr>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="edit_<?php echo $product['id']?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Order Status</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="manage-orders.php">
+                                                <label>Order Status</label>
+                                                <select name="status" class="form-control">
+                                                    <option value="0">Confirmed</option>
+                                                    <option value="1">Picked up by the Courier</option>
+                                                    <option value="2">Delivered</option>
+                                                </select>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <?php
                         }
                     }

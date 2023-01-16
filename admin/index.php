@@ -87,6 +87,7 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Admin | ShopOn-it</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"></head>
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script><body>
@@ -183,10 +184,12 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
                         <td><?php echo $product['category_name']?></td>
                         <td><?php echo $product['product_price']?></td>
                         <td><div class="btn-group">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit_<?php echo $product['id']?>">
-                                    Edit
+                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#edit_<?php echo $product['id']?>">
+                                    <i class="bi bi-pencil-square"></i>
                                 </button>
-                                <a class="btn btn-danger" href="delete-product.php?id=<?php echo $product['id']?>">Delete</a>
+                                <a class="btn btn-outline-danger" href="delete-product.php?id=<?php echo $product['id']?>">
+                                    <i class="bi bi-trash"></i>
+                                </a>
                             </div></td>
                     </tr>
                 <?php
