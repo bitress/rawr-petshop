@@ -14,7 +14,28 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
     header("Location: index.php");
 }
 
-if (isset($_POST['addProduct'])){
+if (isset($_POST['update_category'])){
+
+    $id = $_POST['id'];
+    $name = $_POST['name'];
+    $orig_image = $_POST['orig_image'];
+
+
+    if(isset($_FILES["image"])){
+        $image  = $_FILES['image']['name'];
+        $target_dir = "../images/category/";
+        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        move_uploaded_file($_FILES["image"]["tmp_name"], $target_file) ;
+    } else {
+        $image = $orig_image;
+    }
+
+    $sql = "UPDATE category SET category_name = '$name', category_image = '$image' WHERE  category_id = '$id'";
+    mysqli_query($con, $sql);
+
+    header("Location: manage-category.php");
+
+
 
 
 }
@@ -105,17 +126,17 @@ if (isset($_POST['addProduct'])){
                         while($product = mysqli_fetch_assoc($result)){
                             ?>
                             <tr>
-                                <td><?php echo $product['category_id']?></td>
+                                <td><img src="../images/category/<?php echo $product['category_image']?>" class="img-thumbnail w-50"> </td>
                                 <td><?php echo $product['category_id']?></td>
                                 <td><?php echo $product['category_name']?></td>
                                 <td>
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit">Edit</button>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit<?php echo $product['category_id']?>">Edit</button>
                                         <button type="button" class="btn btn-danger">Delete</button>
                                     </div>
 
                                     <!-- Modal -->
-                                    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="edit<?php echo $product['category_id']?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -123,24 +144,28 @@ if (isset($_POST['addProduct'])){
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form method="post" action="manage-category.php">
-                                                        <input type="hidden" name="category_id">
+                                                    <form method="post" action="manage-category.php" enctype="multipart/form-data">
+                                                        <input type="hidden" name="id" value="<?php echo $product['category_id']?>">
 
                                                         <div class="mb-3">
                                                             <label>Enter Category Name</label>
-                                                            <input type="text" name="name" class="form-control">
+                                                            <input type="text" name="name" value="<?php echo $product['category_name']?>" class="form-control">
                                                         </div>
 
                                                         <div class="mb-3">
                                                             <label>Enter Image</label>
+                                                            <input type="hidden" name="orig_image" value="<?php echo $product['category_image']?>">
                                                             <input type="file" name="image" class="form-control">
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <button type="submit" name="update_category" class="btn btn-primary">Save changes</button>
                                                         </div>
 
                                                     </form>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary">Save changes</button>
                                                 </div>
                                             </div>
                                         </div>

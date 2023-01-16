@@ -240,7 +240,7 @@ include '../includes/navbar.php';
                                 <div class="col-sm-2 splide__slide m-2">
                                     <div class="card bg-light">
                                         <div class="card-body">
-                                            <img src="../logo.png" width="100px" class="float-end">
+                                            <img src="../images/category/<?php echo $category['category_image'] ?>" width="100px" class="float-end">
                                             <h5 class="card-title"><?php echo $category['category_name'] ?></h5>
                                             <a class="btn btn-outline-dark btn-sm" href="category.php?id=<?php echo $category['category_id'] ?>&name=<?php echo $category['category_name'] ?>">Show Products</a>
 

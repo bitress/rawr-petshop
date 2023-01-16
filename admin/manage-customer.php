@@ -121,6 +121,7 @@ if (isset($_POST['addProduct'])){
                 <table class="table" id="myTable">
                     <thead>
                     <th>ID</th>
+                    <td>Image</td>
                     <th>Firstname</th>
                     <th>Middlename</th>
                     <th>Lastname</th>
@@ -138,6 +139,7 @@ if (isset($_POST['addProduct'])){
                             ?>
                             <tr>
                                 <td><?php echo $product['id']?></td>
+                                <td><img class="img-thumbnail w-75" src="../images/pfp/<?php echo $product['profile_picture']?>"> </td>
                                 <td><?php echo $product['firstname']?></td>
                                 <td><?php echo $product['middlename']?></td>
                                 <td><?php echo $product['lastname']?></td>

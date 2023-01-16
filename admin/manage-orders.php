@@ -14,6 +14,21 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
     header("Location: index.php");
 }
 
+if (isset($_POST['update_order'])){
+
+    $status = $_POST['status'];
+    $id = $_POST['checkout_id'];
+    $sql = "UPDATE `checkout` SET `status` = '$status' WHERE `checkout_id` = '$id'";
+    $result = mysqli_query($con, $sql);
+
+    if ($result){
+        header("Location: manage-orders.php");
+    }
+
+
+
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,12 +112,13 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
                     <tbody>
                     <?php
 
-                    $sql = "SELECT * FROM `checkout` LEFT JOIN cart ON cart.cart_id = checkout.cart_id INNER JOIN products ON products.id = cart.product_id LEFT JOIN users ON users.id = cart.user_id";
+                    $sql = "SELECT checkout.*, products.*, cart.quantity, users.* FROM `checkout` LEFT JOIN cart ON cart.cart_id = checkout.cart_id INNER JOIN products ON products.id = cart.product_id LEFT JOIN users ON users.id = cart.user_id";
                     $result = mysqli_query($con, $sql);
                     if (mysqli_num_rows($result) > 0){
                         while($product = mysqli_fetch_assoc($result)){
 
-                            if ($product['status'] == '0'){
+
+                            if ($product['status'] === '0'){
                                 $status = 'Confirmed';
                             } else if ($product['status'] == '1'){
                                 $status = 'Picked up by the Courier';
@@ -114,7 +130,7 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
 
                             ?>
                             <tr>
-                                <td><?php echo $product['id']?></td>
+                                <td><?php echo $product['checkout_id']?></td>
                                 <td><?php echo $product['firstname']?></td>
                                 <td><?php echo $product['product_name']?></td>
                                 <td><?php echo $product['datetime']?></td>
@@ -122,36 +138,11 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
                                 <td><?php echo $status; ?></td>
                                 <td>
 
-                                    <button class="btn btn-outine-info" type="button" data-bs-toggle="modal" data-bs-target="#edit_<?php echo $product['id']?>"><i class="bi bi-pencil-square"></i></button>
+                                    <button class="btn btn-outine-info" type="button" data-bs-toggle="modal" data-bs-target="#edit_<?php echo $product['checkout_id']?>"><i class="bi bi-pencil-square"></i></button>
 
                                 </td>
                             </tr>
 
-                            <!-- Modal -->
-                            <div class="modal fade" id="edit_<?php echo $product['id']?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Order Status</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form method="post" action="manage-orders.php">
-                                                <label>Order Status</label>
-                                                <select name="status" class="form-control">
-                                                    <option value="0">Confirmed</option>
-                                                    <option value="1">Picked up by the Courier</option>
-                                                    <option value="2">Delivered</option>
-                                                </select>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
                             <?php
                         }
@@ -164,6 +155,62 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
     </div>
 </div>
 
+
+
+<?php
+
+$sql = "SELECT checkout.*, products.*, cart.quantity, users.* FROM `checkout` LEFT JOIN cart ON cart.cart_id = checkout.cart_id INNER JOIN products ON products.id = cart.product_id LEFT JOIN users ON users.id = cart.user_id";
+$result = mysqli_query($con, $sql);
+if (mysqli_num_rows($result) > 0){
+    while($product = mysqli_fetch_assoc($result)){
+
+
+        if ($product['status'] === '0'){
+            $status = 'Confirmed';
+        } else if ($product['status'] == '1'){
+            $status = 'Picked up by the Courier';
+        } else if ($product['status'] == '2'){
+            $status = 'Delivered';
+        } else {
+            $status = '';
+        }
+
+        ?>
+        <!-- Modal -->
+        <div class="modal fade" id="edit_<?php echo $product['checkout_id']?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Order Status</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="manage-orders.php">
+                            <input type="hidden" name="checkout_id" value="<?php echo $product['checkout_id']?>">
+                            <div class="mb-3">
+                                <label>Order Status</label>
+                                <select name="status" class="form-control">
+                                    <option value="0">Confirmed</option>
+                                    <option value="1">Picked up by the Courier</option>
+                                    <option value="2">Delivered</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <button type="submit" name="update_order" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+}
+?>
 
 
 <script>

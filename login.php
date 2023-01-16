@@ -33,14 +33,14 @@ if (isset($_POST['submit'])) {
                 $_SESSION['id'] = $row['id'];
                 header("Location: admin/index.php");
             } else {
-                header("Location: index.php?error=failed");
+                header("Location: login.php?error=failed");
             }
         } else {
-            header("Location: index.php?error=Incorrect Password");
+            header("Location: login.php?error=Incorrect Password");
         }
     } else {
 
-        header("Location: index.php?error=No user found with that username");
+        header("Location: login.php?error=No user found with that username");
     }
 
 }
