@@ -23,6 +23,7 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
         $product_price = $_POST['product_price'];
         $category = $_POST['category'];
         $description = $_POST['description'];
+        $stock = $_POST['stock'];
 
         if(!empty($_FILES['product_image'])){
             $file_name = $_FILES['product_image']['name'];
@@ -41,7 +42,7 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
                 $product_image = "products/".$file_name;
                 move_uploaded_file($file_tmp, "../products/".$file_name);
 
-                $sql = "INSERT INTO products (product_name, product_description product_price, category, product_image) VALUES ('$product_name', '$description', '$product_price', '$category', '$product_image')";
+                $sql = "INSERT INTO products (product_name, product_description, product_price, stock, category, product_image) VALUES ('$product_name', '$description', '$product_price', '$category', '$product_image')";
                 mysqli_query($con, $sql);
                 header("Location: index.php");
 
@@ -281,6 +282,11 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
                         <div class="mb-3">
                             <label>Product Name</label>
                             <input type="text" name="product_name" class="form-control">
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Product Stock</label>
+                            <input type="text" name="stock" class="form-control">
                         </div>
 
                         <div class="mb-3">

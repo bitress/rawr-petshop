@@ -28,7 +28,7 @@ if (isset($_POST['submit'])) {
                 header("Location: register.php?error=That username is already in use.");
             } else {
 
-                $pass = md5($password);
+                $pass = password_hash($password, PASSWORD_DEFAULT);
 
                 $sql = "INSERT INTO `users` (`username`, `password`, `firstname`, `middlename`, `lastname`, `address`, `profile_picture`) VALUES ('$username', '$pass', '$firstname', '$middlename', '$lastname', '$address', '$profile_picture')";
                 $stmt = mysqli_query($con, $sql);

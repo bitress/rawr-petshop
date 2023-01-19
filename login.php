@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
     $row = mysqli_fetch_assoc($result);
     if(mysqli_num_rows($result) > 0){
 
-        if ($row['password'] === $password){
+        if (password_verify($password, $row['password'])){
             if ($row['level'] == "customer") {
 
                 $_SESSION['isLoggedIn'] = true;
