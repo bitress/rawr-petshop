@@ -22,9 +22,9 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
         $product_name = $_POST['product_name'];
         $product_price = $_POST['product_price'];
         $category = $_POST['category'];
+        $description = $_POST['description'];
 
-        if(isset($_FILES['product_image'])){
-            $error = "";
+        if(!empty($_FILES['product_image'])){
             $file_name = $_FILES['product_image']['name'];
             $file_tmp = $_FILES['product_image']['tmp_name'];
 
@@ -38,17 +38,14 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
                 $error ="Please choose a JPEG or PNG file.";
             }
 
-            if($error == "") {
                 $product_image = "products/".$file_name;
                 move_uploaded_file($file_tmp, "../products/".$file_name);
 
-                $sql = "INSERT INTO products (product_name, product_price, category, product_image) VALUES ('$product_name', '$product_price', '$category', '$product_image')";
+                $sql = "INSERT INTO products (product_name, product_description product_price, category, product_image) VALUES ('$product_name', '$description', '$product_price', '$category', '$product_image')";
                 mysqli_query($con, $sql);
                 header("Location: index.php");
 
-            }else{
-                print_r($error);
-            }
+
         }
 
     }
@@ -62,11 +59,9 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
         $stock = $_POST['stock'];
         $description = $_POST['description'];
 
-        if(isset($_FILES['product_image'])){
+        if(!empty($_FILES['product_image'])){
             $file_name = $_FILES['product_image']['name'];
             $file_tmp = $_FILES['product_image']['tmp_name'];
-            // Get file extension
-            $array = explode('.', $_FILES['product_image']['name']);
             $product_image = "products/" . $file_name;
             move_uploaded_file($file_tmp, "../products/" . $file_name);
         } else {
@@ -94,7 +89,7 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
 
 <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.php">ShopOn-it</a>
+        <a class="navbar-brand" href="index.php">Rawr PetShop</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -231,7 +226,6 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
 
                             <div class="mb-3">
                                 <label>Product Category</label>
-
                                 <textarea name="description" rows="3" class="form-control"><?php echo $product['product_description']?></textarea>
 
                             </div>
@@ -288,6 +282,12 @@ if (isset($_SESSION['isLoggedIn']) && isset($_SESSION['admin'])){
                             <label>Product Name</label>
                             <input type="text" name="product_name" class="form-control">
                         </div>
+
+                        <div class="mb-3">
+                            <label>Product Description</label>
+                            <textarea class="form-control" name="description" rows="5"></textarea>
+                        </div>
+
                         <div class="mb-3">
                             <label>Product Category</label>
                            <select name="category" class="form-control">

@@ -55,7 +55,7 @@ if (isset($_POST['update_category'])){
 
 <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.php">ShopOn-it</a>
+        <a class="navbar-brand" href="index.php">Rawr PetShop</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -132,7 +132,7 @@ if (isset($_POST['update_category'])){
                                 <td>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit<?php echo $product['category_id']?>">Edit</button>
-                                        <button type="button" class="btn btn-danger">Delete</button>
+                                        <a type="button" href="delete-category.php?id=<?php echo $product['category_id']?>" class="btn btn-danger">Delete</a>
                                     </div>
 
                                     <!-- Modal -->
